@@ -1,0 +1,28 @@
+body {
+    background-color: #f6f2fb;
+}
+
+.main-content {
+    padding: 2em 3em;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 10px;
+}
+
+.status-content {
+    padding: 1em 1em;
+    margin: 0 auto 10px;
+    background-color: rgb(255, 248, 254);
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.tablewrapper {
+    height: 550px;
+    overflow-y: scroll;
+}
