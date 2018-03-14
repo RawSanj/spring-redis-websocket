@@ -6,7 +6,7 @@ Scalable Spring Boot Chat Application to demonstrate use of Redis [Pub/Sub] for 
 
 ### Deploy to Play-with-Docker
 
-Click this button to deploy multiple instances of the spring-redis-websocket load balanced by NGINX:
+Ctrl + Click this button to deploy multiple instances of the spring-redis-websocket load balanced by NGINX:
 
 [![Deploy to Heroku](deploy-to-pwd.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/RawSanj/spring-redis-websocket/master/src/main/docker/docker-compose.yml#)
 
