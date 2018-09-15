@@ -19,11 +19,11 @@ spec:
         image: rawsanj/spring-redis-websocket
         resources:
           limits:
-            memory: "2048Mi"
-            cpu: "1"
+            memory: "512Mi"
+            cpu: "0.2"
           requests:
-            memory: "2048Mi"
-            cpu: "1"
+            memory: "512Mi"
+            cpu: "0.2"
         ports:
         - containerPort: 8080
         envFrom:

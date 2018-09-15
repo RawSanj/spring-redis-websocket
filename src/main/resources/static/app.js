@@ -58,24 +58,8 @@ $( document ).ready(function() {
 
     function showChatMessage(chatMessage) {
         rowCount++;
-        $("#messages").append("<tr" +"><td scope='row'> <h6><b>  " + rowCount + ".</b></h6> </td><td>" + chatMessage.id + "</td> <td> "+ chatMessage.message + "</td><td> "+ chatMessage.hostname + "</td></tr>");
+        $("#messages").prepend("<tr" +"><td scope='row'> <h6><b>  " +  chatMessage.id  + ".</b></h6> </td> <td> "+ chatMessage.message + "</td><td> "+ chatMessage.hostname + "</td></tr>");
     }
-
-    function setPackageStatus(status){
-        messageCount = status.success;
-        totalCompleted = messageCount;
-    
-        $("#messageCount").text(messageCount);
-        $("#totalCount").text(totalCompleted);
-    }
-
-    $("#startBtn").click(function(){
-        console.log("Process Started");
-        packageGenProcessId = $("#request-no").val();
-        $("#req-id-no").text(packageGenProcessId);
-        $("#exampleModal").modal('hide');
-        connect();
-    });
 
     $("#disconnect").click(function(){
         console.log("Disconnect");

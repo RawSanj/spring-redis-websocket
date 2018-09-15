@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: 'bitnami/redis:latest'
+        image: 'bitnami/redis:4.0.11-r6'
         ports:
         - containerPort: 6379
         volumeMounts:
