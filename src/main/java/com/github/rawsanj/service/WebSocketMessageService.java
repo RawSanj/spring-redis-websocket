@@ -11,26 +11,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class WebSocketMessageService {
 
-    private final ApplicationProperties applicationProperties;
-    private final SimpMessagingTemplate template;
+	private final ApplicationProperties applicationProperties;
+	private final SimpMessagingTemplate template;
 
+	private static final Logger log = LoggerFactory.getLogger(WebSocketMessageService.class);
 
-    private static final Logger LOG = LoggerFactory.getLogger(WebSocketMessageService.class);
+	public WebSocketMessageService(ApplicationProperties applicationProperties, SimpMessagingTemplate template) {
+		this.applicationProperties = applicationProperties;
+		this.template = template;
+	}
 
-    public WebSocketMessageService(ApplicationProperties applicationProperties, SimpMessagingTemplate template) {
-        this.applicationProperties = applicationProperties;
-        this.template = template;
-    }
+	@Async
+	public void sendChatMessage(ChatMessage message) {
+		template.convertAndSend(applicationProperties.getTopic().getMessage(), message);
+	}
 
-    @Async
-    public void sendChatMessage(ChatMessage message) {
-        template.convertAndSend(applicationProperties.getTopic().getMessage(), message);
-    }
-
-    @Async
-    public void sendMessageCount(Integer totalMessage) {
-        LOG.info("Total Messages: {}", totalMessage);
-        template.convertAndSend(applicationProperties.getTopic().getCount(), totalMessage);
-    }
+	@Async
+	public void sendMessageCount(Integer totalMessage) {
+		log.info("Total Messages: {}", totalMessage);
+		template.convertAndSend(applicationProperties.getTopic().getCount(), totalMessage);
+	}
 
 }

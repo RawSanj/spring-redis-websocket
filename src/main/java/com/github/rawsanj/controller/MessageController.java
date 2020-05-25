@@ -23,7 +23,7 @@ import java.util.Map;
 @Controller
 public class MessageController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageController.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageController.class);
 
     private final RedisAtomicInteger chatMessageCounter;
     private final StringRedisTemplate stringRedisTemplate;
@@ -35,7 +35,7 @@ public class MessageController {
 
     @MessageMapping("/message")
     public void sendWsChatMessage(String message) throws JsonProcessingException {
-        LOGGER.info("Incoming WebSocket Message : {}", message);
+        log.info("Incoming WebSocket Message : {}", message);
 
         publishMessageToRedis(message);
     }
@@ -44,7 +44,7 @@ public class MessageController {
     @ResponseBody
     public ResponseEntity<Map<String, String>> sendHttpChatHttpMessage(@RequestBody Map<String, String> message) throws JsonProcessingException {
         String httpMessage = message.get("message");
-        LOGGER.info("Incoming HTTP Message : {}", httpMessage);
+        log.info("Incoming HTTP Message : {}", httpMessage);
         publishMessageToRedis(httpMessage);
 
         Map<String, String> response = new HashMap<>();

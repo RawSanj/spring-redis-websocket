@@ -1,38 +1,38 @@
 body {
-    background-color: #f6f2fb;
+	background-color: #f6f2fb;
 }
 
 .main-content {
-    padding: 2em 3em;
-    margin: 0 auto 20px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 10px;
+	padding: 2em 3em;
+	margin: 0 auto 20px;
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 10px;
 }
 
 .status-content {
-    padding: 1em 1em;
-    margin: 0 auto 10px;
-    background-color: rgb(255, 248, 254);
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+	padding: 1em 1em;
+	margin: 0 auto 10px;
+	background-color: rgb(255, 248, 254);
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .tablewrapper {
-    height: 550px;
-    overflow-y: scroll;
+	height: 550px;
+	overflow-y: scroll;
 }
 
 .footer {
-    height: 60px;
-    bottom: 10px;
-    padding: 40px;
+	height: 60px;
+	bottom: 10px;
+	padding: 40px;
 
-    font-size: 14px;
-    position: fixed;
-    width: 100%;
+	font-size: 14px;
+	position: fixed;
+	width: 100%;
 }

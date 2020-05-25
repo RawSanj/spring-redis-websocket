@@ -8,6 +8,7 @@ public class ApplicationProperties {
     private final Topic topic = new Topic();
 
     public static class Topic {
+
         private String message;
         private String count;
 

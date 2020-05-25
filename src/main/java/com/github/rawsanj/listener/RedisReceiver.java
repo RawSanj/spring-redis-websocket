@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class RedisReceiver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisReceiver.class);
+    private static final Logger log = LoggerFactory.getLogger(RedisReceiver.class);
 
     private final WebSocketMessageService webSocketMessageService;
 
@@ -24,7 +24,7 @@ public class RedisReceiver {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessage chatMessage = objectMapper.readValue(message, ChatMessage.class);
 
-        LOGGER.info("Notification Message Received: " + chatMessage);
+        log.info("Notification Message Received: " + chatMessage);
         webSocketMessageService.sendChatMessage(chatMessage);
 
     }
@@ -32,7 +32,7 @@ public class RedisReceiver {
     // Invoked when message is publish to "count" channel
     public void receiveCountMessage(String totalMessageCount) {
 
-        LOGGER.info("Count Message Received :" + totalMessageCount);
+        log.info("Count Message Received :" + totalMessageCount);
         webSocketMessageService.sendMessageCount(Integer.parseInt(totalMessageCount));
 
     }

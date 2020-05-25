@@ -1,5 +1,7 @@
 package com.github.rawsanj.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -14,28 +16,30 @@ import java.util.concurrent.Executors;
 @Configuration
 public class AsyncConfig implements AsyncConfigurer {
 
-  @Override
-  public Executor getAsyncExecutor() {
-    return new ConcurrentTaskExecutor(
-      Executors.newFixedThreadPool(2));
-  }
+	private static final Logger log = LoggerFactory.getLogger(WebSocketConfig.class);
 
-  @Override
-  public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-    return new CustomAsyncExceptionHandler();
-  }
+	@Override
+	public Executor getAsyncExecutor() {
+		return new ConcurrentTaskExecutor(
+			Executors.newFixedThreadPool(2));
+	}
 
-  static class CustomAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+	@Override
+	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+		return new CustomAsyncExceptionHandler();
+	}
 
-    @Override
-    public void handleUncaughtException(
-      Throwable throwable, Method method, Object... obj) {
+	static class CustomAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
 
-      System.out.println("Exception message - " + throwable.getMessage());
-      System.out.println("Method name - " + method.getName());
-      for (Object param : obj) {
-        System.out.println("Parameter value - " + param);
-      }
-    }
-  }
+		@Override
+		public void handleUncaughtException(
+			Throwable throwable, Method method, Object... obj) {
+
+			log.info("Exception message - {}", throwable.getMessage());
+			log.info("Method name - {}", method.getName());
+			for (Object param : obj) {
+				log.info("Parameter value - {}", param);
+			}
+		}
+	}
 }
