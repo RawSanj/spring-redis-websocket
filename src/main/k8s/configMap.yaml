@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: spring-redis-websocket-config
+    name: spring-redis-websocket-config
 data:
-  SPRING_REDIS_HOST: 'redis-service'
-  SPRING_REDIS_PASSWORD: 'SuperSecretRedisPassword'
-  SPRING_REDIS_PORT: '6379'
-  RAW_TOPIC_MESSAGE: '/topic/messages'
-  RAW_TOPIC_COUNT: '/topic/count'
+    SPRING_REDIS_HOST: 'redis-service'
+    SPRING_REDIS_PASSWORD: 'SuperSecretRedisPassword'
+    SPRING_REDIS_PORT: '6379'
+    RAW_TOPIC_MESSAGE: '/topic/messages'
+    RAW_TOPIC_COUNT: '/topic/count'

@@ -1,31 +1,31 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-redis-websocket-deployment
-  labels:
-    app: spring-redis-websocket
-spec:
-  replicas: 4
-  selector:
-    matchLabels:
-      app: spring-redis-websocket
-  template:
-    metadata:
-      labels:
+    name: spring-redis-websocket-deployment
+    labels:
         app: spring-redis-websocket
-    spec:
-      containers:
-      - name: spring-redis-websocket
-        image: rawsanj/spring-redis-websocket
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "0.2"
-          requests:
-            memory: "512Mi"
-            cpu: "0.2"
-        ports:
-        - containerPort: 8080
-        envFrom:
-        - configMapRef:
-            name: spring-redis-websocket-config
+spec:
+    replicas: 4
+    selector:
+        matchLabels:
+            app: spring-redis-websocket
+    template:
+        metadata:
+            labels:
+                app: spring-redis-websocket
+        spec:
+            containers:
+                -   name: spring-redis-websocket
+                    image: rawsanj/spring-redis-websocket:1.0.0
+                    resources:
+                        limits:
+                            memory: "512Mi"
+                            cpu: "0.2"
+                        requests:
+                            memory: "512Mi"
+                            cpu: "0.2"
+                    ports:
+                        -   containerPort: 8080
+                    envFrom:
+                        -   configMapRef:
+                                name: spring-redis-websocket-config

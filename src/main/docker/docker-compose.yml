@@ -9,29 +9,34 @@ services:
             - spring-chat-2
             - spring-chat-3
     redis:
-        image: bitnami/redis
+        image: bitnami/redis:4.0.11-r6
         environment:
             - REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "6379:6379"
+        volumes:
+            - 'redis_data:/bitnami'
     spring-chat-1:
-        image: rawsanj/spring-redis-websocket
+        image: rawsanj/spring-redis-websocket:1.0.0
         environment:
             - SPRING_REDIS_HOST=redis
             - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
     spring-chat-2:
-        image: rawsanj/spring-redis-websocket
+        image: rawsanj/spring-redis-websocket:1.0.0
         environment:
             - SPRING_REDIS_HOST=redis
             - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
     spring-chat-3:
-        image: rawsanj/spring-redis-websocket
+        image: rawsanj/spring-redis-websocket:1.0.0
         environment:
             - SPRING_REDIS_HOST=redis
             - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
+volumes:
+    redis_data:
+        driver: local

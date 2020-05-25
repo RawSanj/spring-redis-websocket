@@ -5,7 +5,7 @@
 
 	<groupId>com.github.rawsanj</groupId>
 	<artifactId>spring-redis-websocket</artifactId>
-	<version>0.1.0</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>spring-redis-websocket</name>

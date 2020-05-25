@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+    name: spring-redis-websocket-ingress
+    annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+    rules:
+        -   host: rawsanj.cloud
+            http:
+                paths:
+                    -   path: /
+                        backend:
+                            serviceName: spring-redis-websocket-service
+                            servicePort: 80
+                            
