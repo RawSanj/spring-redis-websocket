@@ -17,7 +17,7 @@ Install and run [Redis] locally or on Docker.
 
 To run Redis in Docker:
 ```sh
-$ docker run -d bitnami/redis -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword
+$ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/redis:4.0.11-r6
 ```
  
 ##### Clone repo:
