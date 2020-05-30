@@ -17,21 +17,21 @@ services:
         volumes:
             - 'redis_data:/bitnami'
     spring-chat-1:
-        image: rawsanj/spring-redis-websocket:1.0.0
+        image: rawsanj/spring-redis-websocket:2.0.0
         environment:
             - SPRING_REDIS_HOST=redis
             - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
     spring-chat-2:
-        image: rawsanj/spring-redis-websocket:1.0.0
+        image: rawsanj/spring-redis-websocket:2.0.0
         environment:
             - SPRING_REDIS_HOST=redis
             - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
     spring-chat-3:
-        image: rawsanj/spring-redis-websocket:1.0.0
+        image: rawsanj/spring-redis-websocket:2.0.0
         environment:
             - SPRING_REDIS_HOST=redis
             - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword

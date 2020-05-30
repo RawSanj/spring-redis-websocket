@@ -96,6 +96,7 @@ $(document).ready(function () {
 			contentType: "application/json",
 			success: function (response) {
 				console.log(response);
+				$("#chat-message").val("");
 			},
 			error: function (err) {
 				console.log(err);
