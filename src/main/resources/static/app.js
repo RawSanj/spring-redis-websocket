@@ -1,14 +1,21 @@
 $(document).ready(function () {
 
-	$('.alert').hide();
+	// define selectors to avoid duplication
+	let $alert = $('.alert');
+	let $connect = $("#connect");
+	let $disconnect = $("#disconnect");
+	let $chatMessage = $("#chat-message");
 
-	var stompClient = null;
-	var messageCount = 0;
-	var rowCount = 0;
+	$alert.hide();
+
+	let messageCount = 0;
+	let rowCount = 0;
+
+	let websocket = null;
 
 	function setConnected(connected) {
-		$("#connect").prop("disabled", connected);
-		$("#disconnect").prop("disabled", !connected);
+		$connect.prop("disabled", connected);
+		$disconnect.prop("disabled", !connected);
 		if (connected) {
 			$("#chatMessage").show();
 		} else {
@@ -18,35 +25,42 @@ $(document).ready(function () {
 	}
 
 	function connect(callback) {
-		$('.alert').hide();
-		var socket = new SockJS('/redis-chat');
-		stompClient = Stomp.over(socket);
+		$alert.hide();
 
-		stompClient.connect({}, function (frame) {
+		let host = location.hostname + (location.port ? ':' + location.port : '');
+		websocket = new WebSocket("ws://" + host + "/redis-chat");
+
+		websocket.onopen = openEvent => {
 			setConnected(true);
-			console.log('Connected: ' + frame);
-			stompClient.subscribe('/topic/messages', function (chatMessage) {
-				console.log("Message: ", chatMessage);
-				showChatMessage(JSON.parse(chatMessage.body));
-			});
-			stompClient.subscribe('/topic/count', function (totalCount) {
-				console.log("Total: ", totalCount.body);
-				setMessageCount(totalCount.body);
-			});
 			callback();
-		}, function (message) {
+		};
+
+		websocket.onmessage = messageEvent => {
+			console.log("Message: ", messageEvent);
+			let chatMessage = JSON.parse(messageEvent.data);
+			setMessageCount(chatMessage.id);
+			showChatMessage(chatMessage);
+		};
+
+		websocket.onerror = errorEvent => {
+			console.log("Error Occured.", errorEvent);
 			disconnect();
-			$('.alert').show();
-		});
+		};
+
+		websocket.onclose = closeEvent => {
+			console.log("WebSocket Session Closed.", closeEvent);
+			disconnect();
+		};
+
 		$("#messageCount").text(messageCount);
 	}
 
 	function disconnect() {
-		if (stompClient !== null) {
-			stompClient.disconnect();
+		if (websocket !== null && websocket.readyState === websocket.OPEN) {
+			websocket.close();
 		}
 		setConnected(false);
-		console.log("Disconnected");
+		console.log("Session Closed. WebSocket Disconnected.");
 		messageCount = 0;
 		rowCount = 0;
 	}
@@ -60,21 +74,17 @@ $(document).ready(function () {
 		$("#messages").prepend("<tr" + "><td scope='row'> <h6><b>  " + chatMessage.id + ".</b></h6> </td> <td> " + chatMessage.message + "</td><td> " + chatMessage.hostname + "</td></tr>");
 	}
 
-	$("#disconnect").click(function () {
+	$disconnect.click(function () {
 		console.log("Disconnect");
 		disconnect();
 	});
 
 	$("#close-alert").click(function () {
-		$('.alert').hide();
+		$alert.hide();
 	});
 
-	$("#connect").click(function () {
-		if (stompClient == null) {
-			connect(function () {
-				console.log("Connected");
-			});
-		} else if (!stompClient.connected) {
+	$connect.click(function () {
+		if (websocket == null) {
 			connect(function () {
 				console.log("Connected");
 			});
@@ -87,7 +97,7 @@ $(document).ready(function () {
 	});
 
 	$("#send-http-message").click(function () {
-		var chatMessage = $("#chat-message").val();
+		var chatMessage = $chatMessage.val();
 		$.ajax({
 			url: "/message",
 			type: "POST",
@@ -96,7 +106,7 @@ $(document).ready(function () {
 			contentType: "application/json",
 			success: function (response) {
 				console.log(response);
-				$("#chat-message").val("");
+				$chatMessage.val("");
 			},
 			error: function (err) {
 				console.log(err);
@@ -106,22 +116,25 @@ $(document).ready(function () {
 
 	$('#chat-message').keypress(function (e) {
 		var key = e.which;
-		if (key == 13) {
+		if (key === 13) {
 			sendMessage();
 		}
 	});
 
 	function sendMessage() {
-		if (stompClient !== null && stompClient.connected) {
-			var chatMessage = $("#chat-message").val();
-			stompClient.send("/app/message", {}, chatMessage);
-			$("#chat-message").val("");
+
+		console.log('websocket', websocket);
+
+		if (websocket != null && websocket.readyState === websocket.OPEN) {
+			let chatMessage = $chatMessage.val();
+			websocket.send(chatMessage);
+			$chatMessage.val("");
 		} else {
 			connect(function () {
-				var chatMessage = $("#chat-message").val();
-				stompClient.send("/app/message", {}, chatMessage);
-				$("#chat-message").val("");
-			});
+				let chatMessage = $chatMessage.val();
+				websocket.send(chatMessage);
+				$chatMessage.val("");
+			})
 		}
 	}
 

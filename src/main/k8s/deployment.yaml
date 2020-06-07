@@ -16,14 +16,14 @@ spec:
         spec:
             containers:
                 -   name: spring-redis-websocket
-                    image: rawsanj/spring-redis-websocket:2.0.0
+                    image: rawsanj/spring-redis-websocket:2.0.0-webflux
                     resources:
                         limits:
                             memory: "512Mi"
-                            cpu: "0.2"
+                            cpu: "0.5"
                         requests:
                             memory: "512Mi"
-                            cpu: "0.2"
+                            cpu: "0.5"
                     ports:
                         -   containerPort: 8080
                     envFrom:

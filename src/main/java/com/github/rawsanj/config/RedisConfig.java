@@ -1,65 +1,55 @@
 package com.github.rawsanj.config;
 
-import com.github.rawsanj.listener.RedisReceiver;
-import com.github.rawsanj.service.WebSocketMessageService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.github.rawsanj.messaging.RedisChatMessageListener;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
+import reactor.core.publisher.Flux;
+
+import java.time.Duration;
+
+import static com.github.rawsanj.config.ChatConstants.MESSAGE_COUNTER_KEY;
 
 @Configuration
+@Slf4j
 public class RedisConfig {
 
 	@Bean
-	RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
-											@Qualifier("chatMessageListenerAdapter") MessageListenerAdapter chatMessageListenerAdapter,
-											@Qualifier("countListenerAdapter") MessageListenerAdapter countListenerAdapter) {
-
-		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory);
-		container.addMessageListener(chatMessageListenerAdapter, new PatternTopic("chat"));
-		container.addMessageListener(countListenerAdapter, new PatternTopic("count"));
-		return container;
-	}
-
-	@Bean("chatMessageListenerAdapter")
-	MessageListenerAdapter chatMessageListenerAdapter(RedisReceiver redisReceiver) {
-		return new MessageListenerAdapter(redisReceiver, "receiveChatMessage");
-	}
-
-	@Bean("countListenerAdapter")
-	MessageListenerAdapter countListenerAdapter(RedisReceiver redisReceiver) {
-		return new MessageListenerAdapter(redisReceiver, "receiveCountMessage");
+	ReactiveRedisConnectionFactory reactiveRedisConnectionFactory(RedisProperties redisProperties) {
+		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort());
+		redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
+		return new LettuceConnectionFactory(redisStandaloneConfiguration);
 	}
 
 	@Bean
-	RedisReceiver receiver(WebSocketMessageService webSocketMessageService) {
-		return new RedisReceiver(webSocketMessageService);
-	}
-
-	@Bean
-	StringRedisTemplate template(RedisConnectionFactory connectionFactory) {
-		return new StringRedisTemplate(connectionFactory);
-	}
-
-	@Bean
-	RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-		RedisTemplate redisTemplate = new RedisTemplate();
-		redisTemplate.setConnectionFactory(redisConnectionFactory);
-		return redisTemplate;
+	ReactiveStringRedisTemplate template(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+		return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
 	}
 
 	// Redis Atomic Counter to store no. of total messages sent from multiple app instances.
 	@Bean
-	RedisAtomicInteger getChatMessageCounter(RedisTemplate redisTemplate) {
-		RedisAtomicInteger chatMessageCounter = new RedisAtomicInteger("total-chat-message", redisTemplate.getConnectionFactory());
+	RedisAtomicInteger getChatMessageCounter(RedisConnectionFactory redisConnectionFactory) {
+		RedisAtomicInteger chatMessageCounter = new RedisAtomicInteger(MESSAGE_COUNTER_KEY, redisConnectionFactory);
 		return chatMessageCounter;
+	}
+
+	@Bean
+	ApplicationRunner applicationRunner(RedisChatMessageListener redisChatMessageListener) {
+		return args -> {
+			redisChatMessageListener.subscribeMessageChannelAndPublishOnWebSocket()
+				.doOnSubscribe(subscription -> log.info("Redis Listener Started"))
+				.doOnError(throwable -> log.error("Error listening to Redis topic.", throwable))
+				.doFinally(signalType -> log.info("Stopped Listener. Signal Type: {}", signalType))
+				.subscribe();
+		};
 	}
 
 }

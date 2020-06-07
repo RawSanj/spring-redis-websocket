@@ -6,5 +6,3 @@ data:
     SPRING_REDIS_HOST: 'redis-service'
     SPRING_REDIS_PASSWORD: 'SuperSecretRedisPassword'
     SPRING_REDIS_PORT: '6379'
-    RAW_TOPIC_MESSAGE: '/topic/messages'
-    RAW_TOPIC_COUNT: '/topic/count'

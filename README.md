@@ -1,8 +1,12 @@
-# spring-redis-websocket
+# spring-redis-reactive-websocket
 
-## Multi-instance WebSocket messaging demo using Spring Boot and Redis Pub/Sub
+## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
 
-Scalable Spring Boot Chat Application to demonstrate use of Redis [Pub/Sub] for [WebSocket using STOMP] protocol, without using any external Message Broker like RabbitMQ to sync messages between different instances. 
+Scalable Java 11 Spring Boot WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different instances. 
+
+The older non-reactive servlet based spring-redis-websocket application can be found in below links:
+1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
+1. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
 
 ### Deploy to Play-with-Docker
 
@@ -137,6 +141,6 @@ Copyright (c) 2020 Sanjay Rawat
    [NGINX]: <https://www.nginx.com>
    [Kubernetes]: <https://kubernetes.io>
    [Pub/Sub]: <https://redis.io/topics/pubsub>
-   [WebSocket using STOMP]: <https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-stomp>
+   [WebSocket Handler]: <https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websockethandler>
    [Play with Kubernetes]: <https://labs.play-with-k8s.com>
    [Play with Docker]: <https://labs.play-with-docker.com>
