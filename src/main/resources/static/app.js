@@ -28,7 +28,9 @@ $(document).ready(function () {
 		$alert.hide();
 
 		let host = location.hostname + (location.port ? ':' + location.port : '');
-		websocket = new WebSocket("ws://" + host + "/redis-chat");
+		let wsProtocol = location.protocol === "https:" ? "wss://" : "ws://";
+
+		websocket = new WebSocket(wsProtocol + host + "/redis-chat");
 
 		websocket.onopen = openEvent => {
 			setConnected(true);
@@ -63,6 +65,7 @@ $(document).ready(function () {
 		console.log("Session Closed. WebSocket Disconnected.");
 		messageCount = 0;
 		rowCount = 0;
+		$alert.show();
 	}
 
 	function setMessageCount(totalCount) {

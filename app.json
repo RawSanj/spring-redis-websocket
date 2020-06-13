@@ -1,7 +1,11 @@
 {
 	"name": "spring-redis-reactive-websocket",
 	"description": "Scalable Java 11 Spring Boot WebFlux Chat Application to demonstrate use of Reactive Redis Pub/Sub using Reactive WebSocket Handler, without using any external Message Broker like RabbitMQ to sync messages between different instances.",
+	"website": "https://rawsanj.dev",
 	"repository": "https://github.com/RawSanj/spring-redis-websocket",
 	"image": "heroku/java",
-	"addons": [ "heroku-redis" ]
+	"addons": ["heroku-redis:hobby-dev"],
+	"env": {
+		"SPRING_PROFILES_ACTIVE": "heroku"
+	}
 }
