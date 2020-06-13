@@ -4,15 +4,17 @@
 
 Scalable Java 11 Spring Boot WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different instances. 
 
-The older non-reactive servlet based spring-redis-websocket application can be found in below links:
-1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
-1. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+> The older non-reactive servlet based spring-redis-websocket application can be found in below links:
+>1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
+>2. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
 
 ### Deploy to Play-with-Docker
 
 Ctrl + Click this button to deploy multiple instances of the spring-redis-websocket load balanced by NGINX:
 
-[![Deploy to Heroku](deploy-to-pwd.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/RawSanj/spring-redis-websocket/master/src/main/docker/docker-compose.yml#)
+[![Deploy to PWD](deploy-to-pwd.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/RawSanj/spring-redis-websocket/master/src/main/docker/docker-compose.yml#)
 
 ### Installation and Configuration
 
