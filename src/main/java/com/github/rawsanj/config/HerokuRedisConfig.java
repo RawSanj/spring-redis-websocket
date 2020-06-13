@@ -1,9 +1,9 @@
 package com.github.rawsanj.config;
 
 import com.github.rawsanj.messaging.RedisChatMessageListener;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,21 +13,32 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
-import reactor.core.publisher.Flux;
 
-import java.time.Duration;
+import java.net.URI;
 
 import static com.github.rawsanj.config.ChatConstants.MESSAGE_COUNTER_KEY;
 
 @Slf4j
 @Configuration
-@Profile("!heroku")
-public class RedisConfig {
+@Profile("heroku")
+public class HerokuRedisConfig {
 
 	@Bean
-	ReactiveRedisConnectionFactory reactiveRedisConnectionFactory(RedisProperties redisProperties) {
-		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort());
-		redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
+	ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
+		return lettuceConnectionFactory();
+	}
+
+	@Bean
+	RedisConnectionFactory redisConnectionFactory() {
+		return lettuceConnectionFactory();
+	}
+
+	@SneakyThrows
+	private LettuceConnectionFactory lettuceConnectionFactory() {
+		String redisUrl = System.getenv("REDIS_URL");
+		URI redistogoUri = new URI(redisUrl);
+		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redistogoUri.getHost(), redistogoUri.getPort());
+		redisStandaloneConfiguration.setPassword(redistogoUri.getUserInfo().split(":", 2)[1]);
 		return new LettuceConnectionFactory(redisStandaloneConfiguration);
 	}
 
