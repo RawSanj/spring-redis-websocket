@@ -1,0 +1,27 @@
+name: DockerHub
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Build Docker Image with Maven
+      run: mvn spring-boot:build-image --file pom.xml
+    - name: Docker images
+      run: docker images
+    - name: Tag Image
+      run: docker tag rawsanj/spring-redis-websocket:2.0.0-webflux rawsanj/spring-redis-websocket:latest
