@@ -17,7 +17,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
-@Configuration
+@Configuration(proxyBeanMethods=false)
 public class WebHttpHandler {
 
 	@Bean

@@ -1,16 +1,31 @@
 $(document).ready(function () {
 
 	// define selectors to avoid duplication
-	let $alert = $('.alert');
+	let $alert = $('#websocket-disconnected');
+	let $userConnected = $("#connect-alert");
+	let $userDisconnect = $("#disconnect-alert");
 	let $connect = $("#connect");
 	let $disconnect = $("#disconnect");
 	let $chatMessage = $("#chat-message");
 
 	$alert.hide();
+	$userConnected.hide();
+	$userDisconnect.hide();
+
+	function showUserConnectedAlert() {
+		$userConnected.fadeTo(2000, 500).slideUp(500, function() {
+			$userConnected.slideUp(500);
+		});
+	}
+
+	function showUserDisconnectedAlert() {
+		$userDisconnect.fadeTo(2000, 500).slideUp(500, function() {
+			$userDisconnect.slideUp(500);
+		});
+	}
 
 	let messageCount = 0;
 	let rowCount = 0;
-
 	let websocket = null;
 
 	function setConnected(connected) {
@@ -40,8 +55,18 @@ $(document).ready(function () {
 		websocket.onmessage = messageEvent => {
 			console.log("Message: ", messageEvent);
 			let chatMessage = JSON.parse(messageEvent.data);
-			setMessageCount(chatMessage.id);
-			showChatMessage(chatMessage);
+			if (chatMessage.id !== 0) {
+				setMessageCount(chatMessage.id);
+				setUsersOnlineCount(chatMessage.usersOnline);
+				showChatMessage(chatMessage);
+			} else {
+				setUsersOnlineCount(chatMessage.usersOnline);
+				if (chatMessage.message === "CONNECTED") {
+					showUserConnectedAlert();
+				} else {
+					showUserDisconnectedAlert();
+				}
+			}
 		};
 
 		websocket.onerror = errorEvent => {
@@ -65,11 +90,18 @@ $(document).ready(function () {
 		console.log("Session Closed. WebSocket Disconnected.");
 		messageCount = 0;
 		rowCount = 0;
-		$alert.show();
+
+		$alert.fadeTo(5000, 500).slideUp(500, function() {
+			$alert.slideUp(500);
+		});
 	}
 
 	function setMessageCount(totalCount) {
 		$("#message-count").text(totalCount);
+	}
+
+	function setUsersOnlineCount(userOnline) {
+		$("#users-online").text(userOnline);
 	}
 
 	function showChatMessage(chatMessage) {

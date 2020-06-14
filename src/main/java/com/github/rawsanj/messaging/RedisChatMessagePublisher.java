@@ -6,6 +6,7 @@ import com.github.rawsanj.model.ChatMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -20,11 +21,13 @@ public class RedisChatMessagePublisher {
 
 	private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
 	private final RedisAtomicInteger chatMessageCounter;
+	private final RedisAtomicLong activeUserCounter;
 	private final ObjectMapper objectMapper;
 
-	public RedisChatMessagePublisher(ReactiveStringRedisTemplate reactiveStringRedisTemplate, RedisAtomicInteger chatMessageCounter, ObjectMapper objectMapper) {
+	public RedisChatMessagePublisher(ReactiveStringRedisTemplate reactiveStringRedisTemplate, RedisAtomicInteger chatMessageCounter, RedisAtomicLong activeUserCounter, ObjectMapper objectMapper) {
 		this.reactiveStringRedisTemplate = reactiveStringRedisTemplate;
 		this.chatMessageCounter = chatMessageCounter;
+		this.activeUserCounter = activeUserCounter;
 		this.objectMapper = objectMapper;
 	}
 
@@ -38,7 +41,7 @@ public class RedisChatMessagePublisher {
 			}
 			return "localhost";
 		}).map(hostName -> {
-			ChatMessage chatMessage = new ChatMessage(totalChatMessage, message, hostName);
+			ChatMessage chatMessage = new ChatMessage(totalChatMessage, message, hostName, activeUserCounter.get());
 			String chatString = "EMPTY_MESSAGE";
 			try {
 				chatString = objectMapper.writeValueAsString(chatMessage);

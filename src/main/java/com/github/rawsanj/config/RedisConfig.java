@@ -2,6 +2,7 @@ package com.github.rawsanj.config;
 
 import com.github.rawsanj.messaging.RedisChatMessageListener;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,14 +14,13 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
-import reactor.core.publisher.Flux;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 
-import java.time.Duration;
-
+import static com.github.rawsanj.config.ChatConstants.ACTIVE_USER_KEY;
 import static com.github.rawsanj.config.ChatConstants.MESSAGE_COUNTER_KEY;
 
 @Slf4j
-@Configuration
+@Configuration(proxyBeanMethods=false)
 @Profile("!heroku")
 public class RedisConfig {
 
@@ -38,9 +38,14 @@ public class RedisConfig {
 
 	// Redis Atomic Counter to store no. of total messages sent from multiple app instances.
 	@Bean
-	RedisAtomicInteger getChatMessageCounter(RedisConnectionFactory redisConnectionFactory) {
-		RedisAtomicInteger chatMessageCounter = new RedisAtomicInteger(MESSAGE_COUNTER_KEY, redisConnectionFactory);
-		return chatMessageCounter;
+	RedisAtomicInteger chatMessageCounter(RedisConnectionFactory redisConnectionFactory) {
+		return new RedisAtomicInteger(MESSAGE_COUNTER_KEY, redisConnectionFactory);
+	}
+
+	// Redis Atomic Counter to store no. of Active Users.
+	@Bean
+	RedisAtomicLong activeUserCounter(RedisConnectionFactory redisConnectionFactory) {
+		return new RedisAtomicLong(ACTIVE_USER_KEY, redisConnectionFactory);
 	}
 
 	@Bean

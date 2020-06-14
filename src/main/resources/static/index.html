@@ -19,11 +19,18 @@
 
 <div class="container-fluid" style="text-align:center; padding-right: 30px; padding-left: 30px;">
 
-	<div class="alert alert-warning fade show" role="alert">
+	<div class="alert alert-warning fade show" id="websocket-disconnected" role="alert">
 		<strong>Websocket connection disconnected!</strong> Please try connecting again.
 		<button type="button" class="close" id="close-alert">
 			<span aria-hidden="true">&times;</span>
 		</button>
+	</div>
+
+	<div class="alert alert-success" id="connect-alert" role="alert">
+		<strong>User Connected.</strong>.
+	</div>
+	<div class="alert alert-danger fade show" id="disconnect-alert" role="alert">
+		<strong>User Disconnected.</strong>.
 	</div>
 
 	<div class="row">
@@ -63,12 +70,18 @@
 				</div>
 				<div class="card-body">
 					<div class="form-group row">
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<button id="connect" class="btn btn-lg btn-success" type="button">
 								Connect
 							</button>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
+							<button type="button" class="btn btn-lg btn-outline-warning"><b><span id="users-online"
+																								  style="color: #dc3545">0</span></b>
+								Online
+							</button>
+						</div>
+						<div class="col-sm-4">
 							<button id="disconnect" class="btn btn-lg btn-danger" type="button" disabled="disabled">
 								Disconnect
 							</button>
@@ -86,7 +99,9 @@
 	<br>
 
 	<div class="card text-warning border-warning">
-		<div class="card-header"><h4><b>Messages:</b> <span id="req-id-no"> </span></h4></div>
+		<div class="card-header">
+			<h4><b>Messages:</b> <span id="req-id-no"> </span></h4>
+		</div>
 		<div class="card-body text-primary">
 			<table id="chatMessage" class="table table-striped table-hover" style="text-align:left">
 				<thead>
