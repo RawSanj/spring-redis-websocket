@@ -1,4 +1,5 @@
-# spring-redis-reactive-websocket
+# spring-redis-websocket
+[![Heroku Status](https://github.com/RawSanj/spring-redis-websocket/workflows/Deploy%20to%20Heroku/badge.svg)](https://github.com/RawSanj/spring-redis-websocket/actions?query=workflow%3A%22Deploy+to+Heroku%22) [![DockerHub Status](https://github.com/RawSanj/spring-redis-websocket/workflows/DockerHub/badge.svg)](https://github.com/RawSanj/spring-redis-websocket/actions?query=workflow%3ADockerHub)
 
 ## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
 
