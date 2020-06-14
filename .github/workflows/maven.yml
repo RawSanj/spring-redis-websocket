@@ -24,7 +24,7 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Create Heroku Repo
-      run: heroku create spring-redis-websocket
+    - name: Install Heroku Java Plugin
+      run: heroku plugins:install java
     - name: Deploy to Heroku
-      run: git push heroku master
+      run: heroku deploy:jar target/*.jar --app spring-redis-websocket
