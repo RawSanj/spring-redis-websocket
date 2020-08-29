@@ -21,6 +21,9 @@
 	<properties>
 		<java.version>11</java.version>
 		<registry.image.name>rawsanj/spring-redis-websocket</registry.image.name>
+		<start-class>
+			com.github.rawsanj.SpringRedisWebSocketApplication
+		</start-class>
 	</properties>
 
 	<dependencies>
@@ -35,13 +38,19 @@
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
 
-		<!--Dependencies for Dev Tools and Config-->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<groupId>io.lettuce</groupId>
+			<artifactId>lettuce-core</artifactId>
+			<version>6.0.0.RC1</version>
 		</dependency>
+
+<!--		Dependencies for Dev Tools and Config-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-devtools</artifactId>-->
+<!--			<scope>runtime</scope>-->
+<!--			<optional>true</optional>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -55,17 +64,17 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!--Dependencies for Front-end -->
+		<!--Graal Native Image Dependencies-->
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>webjars-locator</artifactId>
-			<version>0.40</version>
+			<groupId>org.springframework.experimental</groupId>
+			<artifactId>spring-graalvm-native</artifactId>
+			<version>0.7.1</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>3.5.1</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-indexer</artifactId>
 		</dependency>
 
 		<dependency>
@@ -83,6 +92,9 @@
 	</dependencies>
 
 	<build>
+		<finalName>
+			${project.artifactId}
+		</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -93,5 +105,57 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>redis-rc</id>
+			<name>Redis RC</name>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<profiles>
+		<profile>
+			<id>graal</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.graalvm.nativeimage</groupId>
+						<artifactId>native-image-maven-plugin</artifactId>
+						<version>20.1.0</version>
+						<configuration>
+							<buildArgs>
+								-Dspring.graal.mode=initialization-only -Dspring.graal.dump-config=/tmp/computed-reflect-config.json -Dspring.graal.verbose=true -Dspring.graal.skip-logback=true --initialize-at-build-time=org.springframework.data.redis.connection -H:+TraceClassInitialization --no-fallback --allow-incomplete-classpath --report-unsupported-elements-at-runtime -H:+ReportExceptionStackTraces --no-server --initialize-at-build-time=org.reactivestreams.Publisher --initialize-at-run-time=io.netty.channel.unix.Socket --initialize-at-run-time=io.netty.channel.unix.IovArray --initialize-at-run-time=io.netty.channel.epoll.EpollEventLoop --initialize-at-run-time=io.netty.channel.unix.Errors --initialize-at-build-time=org.springframework.boot.validation.MessageInterpolatorFactory --initialize-at-run-time=org.springframework.data.redis.connection.jedis.JedisConnectionFactory --initialize-at-run-time=org.springframework.data.redis.connection.jedis.JedisConnection --initialize-at-build-time=io.lettuce.core.protocol.CommandType --initialize-at-build-time=org.apache.commons.logging --initialize-at-build-time=io.lettuce.core.protocol.LettuceCharsets --initialize-at-run-time=io.netty.util.internal.logging.Log4JLogger --initialize-at-run-time=io.netty.handler.ssl.ReferenceCountedOpenSslEngine --initialize-at-run-time=io.netty.handler.ssl.ConscryptAlpnSslEngine --initialize-at-run-time=io.netty.handler.ssl.ReferenceCountedOpenSslContext --initialize-at-run-time=io.netty.handler.ssl.JdkNpnApplicationProtocolNegotiator --initialize-at-run-time=io.netty.handler.ssl.JettyAlpnSslEngine$ServerEngine --initialize-at-run-time=io.netty.handler.ssl.JettyAlpnSslEngine$ClientEngine
+							</buildArgs>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>native-image</goal>
+								</goals>
+								<phase>package</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
