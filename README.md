@@ -5,6 +5,8 @@
 
 Scalable Java 11 Spring Boot WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different instances. 
 
+Both JVM based application and [Graal Native Image] is supported.
+
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 > The older non-reactive servlet based spring-redis-websocket application can be found in below links:
@@ -24,7 +26,7 @@ Install and run [Redis] locally or on Docker.
 
 To run Redis in Docker:
 ```sh
-$ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/redis:4.0.11-r6
+$ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/redis:6.0.9
 ```
  
 ##### Clone repo:
@@ -32,7 +34,7 @@ $ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/
 $ git clone https://github.com/RawSanj/spring-redis-websocket.git
 ```
 
-#### Build and Run the applications:
+#### Build and Run the application:
 
 Build and run the **spring-redis-websocket** application:
 ```sh
@@ -43,6 +45,27 @@ $ mvn clean package
 $ mvn spring-boot:run
 ```
 
+#### Build Graal Native Image of the application:
+
+Build and run the **spring-redis-websocket** native image:
+```sh
+$ cd spring-redis-websocket
+
+$ mvn -Pnative clean package -DskipNativeImage=false
+
+$ target/spring-redis-websocket # run the executable binary
+```
+
+###### Note: 
+1. This run integration test which uses [Redis TestContainers](https://www.testcontainers.org/supported_docker_environment) so [Docker] should be configured properly to run [Testcontainers]
+2. You need to install [GraalVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-20.3.0) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
+	```sh
+	$ sdk install java 20.3.0.r11-grl  	# Using [SDKMAN](https://sdkman.io/jdks) install GraalVM distribution of JDK
+	
+	$ gu install native-image 		# Then install [native-image](https://www.graalvm.org/reference-manual/native-image) component
+	```
+3. Above steps are applicable for Linux only and creates linux executable binary. To create Windows executable there are few additional set-up required, follow this [Steps](https://www.graalvm.org/docs/getting-started/windows)
+
 ### Run in Docker
 
 #### Build and run the *spring-redis-websocket* locally in Docker:
@@ -52,18 +75,24 @@ Build the JAR file:
 $ mvn clean package
 ```
 
-Build docker image:
+Build Docker image:
 ```sh
-$ mvn spring-boot:build-image
+$ mvn clean spring-boot:build-image
+```
+
+Build Graal Native Docker image:
+```sh
+$ mvn -Pnative clean spring-boot:build-image
 ```
 
 Run docker image:
 ```sh
-$ docker run -d -p 8080:8080 \
-$ rawsanj/spring-redis-websocket
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.0.0-webflux # JVM based Docker Image
+
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.0.0-native  # Graal Native Image based Docker Image
 ```
 
-#### Run multiple instance using docker-compose locally
+#### Run multiple instances using docker-compose locally
  
 Run multiple instances of *spring-redis-websocket* locally load balanced via Ngnix connected to redis container in Docker:
 ```sh
@@ -118,7 +147,9 @@ $ kubectl apply -f src/main/k8s
 
 * [Spring Boot] - An opinionated framework for building production-ready Spring applications. It favors convention over configuration and is designed to get you up and running as quickly as possible.
 * [Spring Data Redis] - Spring Data Redis provides easy configuration and access to Redis from Spring applications.
+* [Graal Native Image] - Native Image is a technology to ahead-of-time compile Java code to a standalone executable, called a native image.
 * [Redis] - Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker.
+* [Testcontainers] - Testcontainers is a Java library that supports JUnit tests, providing lightweight, throwaway instances of common databases or anything else that can run in a Docker container.
 * [Bootstrap] - Bootstrap is an open source toolkit for developing with HTML, CSS, and JS. Custom Bootstrap theme - [Bootswatch Sketch]. 
 * [Docker] - Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications.
 * [NGINX] - NGINX is High Performance Load Balancer, Web Server, & Reverse Proxy.
@@ -130,16 +161,18 @@ License
 
 Apache License 2.0
 
-Copyright (c) 2020 Sanjay Rawat
+Copyright (c) 2021 Sanjay Rawat
 
 [//]: #
 
-   [Spring Boot]:<https://projects.spring.io/spring-boot/>
+   [Spring Boot]:<https://projects.spring.io/spring-boot>
    [Redis]: <https://redis.io>
    [Runtime]: <https://github.com/kubeless/kubeless/blob/master/docs/runtimes.md#custom-runtime-alpha>
-   [Spring Data Redis]: <https://projects.spring.io/spring-data-redis/>
+   [Spring Data Redis]: <https://projects.spring.io/spring-data-redis>
+   [Graal Native Image]: <https://www.graalvm.org/reference-manual/native-image>
+   [Testcontainers]: <https://www.testcontainers.org>
    [Bootstrap]: <https://getbootstrap.com>
-   [Bootswatch Sketch]: <https://bootswatch.com/sketchy/>
+   [Bootswatch Sketch]: <https://bootswatch.com/sketchy>
    [Docker]: <https://www.docker.com>
    [NGINX]: <https://www.nginx.com>
    [Kubernetes]: <https://kubernetes.io>

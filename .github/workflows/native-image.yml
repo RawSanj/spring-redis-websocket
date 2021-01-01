@@ -7,19 +7,23 @@ on:
     branches: [ master ]
 
 jobs:
+
   build-native-docker-image:
     name: Build Docker Image of Graal Native Image of the application
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout Code   
+    - name: Checkout Code
       uses: actions/checkout@v2
-    
+
     - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
         java-version: 11
-        
+
+    - name: Check Maven version and Clean-up
+      run:  mvn -version && mvn clean --file pom.xml
+
     - name: Build Docker Image with Maven
       run: mvn -Pnative clean spring-boot:build-image --file pom.xml
 
