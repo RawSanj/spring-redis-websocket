@@ -32,7 +32,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 	public Mono<Void> handle(WebSocketSession webSocketSession) {
 		Flux<WebSocketMessage> sendMessageFlux = messageDirectProcessor.flatMap(ObjectStringConverter::objectToString)
 			.map(webSocketSession::textMessage)
-			.doOnError(throwable -> log.info("Error Occurred while sending message to WebSocket.", throwable));
+			.doOnError(throwable -> log.error("Error Occurred while sending message to WebSocket.", throwable));
 		Mono<Void> outputMessage = webSocketSession.send(sendMessageFlux);
 
 		Mono<Void> inputMessage = webSocketSession.receive()
@@ -42,7 +42,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 				log.debug("User '{}' Connected. Total Active Users: {}", webSocketSession.getId(), activeUserCount);
 				chatMessageFluxSink.next(new ChatMessage(0, "CONNECTED", "CONNECTED", activeUserCount));
 			})
-			.doOnError(throwable -> log.info("Error Occurred while sending message to Redis.", throwable))
+			.doOnError(throwable -> log.error("Error Occurred while sending message to Redis.", throwable))
 			.doFinally(signalType -> {
 				long activeUserCount = activeUserCounter.decrementAndGet();
 				log.debug("User '{}' Disconnected. Total Active Users: {}", webSocketSession.getId(), activeUserCount);

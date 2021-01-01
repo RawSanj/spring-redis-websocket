@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
-#mvn -DskipTests=true clean package
-#export MI=src/main/resources/META-INF
-#mkdir -p $MI
-#java -agentlib:native-image-agent=config-output-dir=${MI}/native-image -jar target/spring-redis-websocket.jar
+# Runs Tests and Creates Graal Native Image - Uses TestContainers to start the Redis Container required for Test
+mvn -Pnative clean install
 
-## it's at this point that you need to exercise the application: http://localhost:8080/reservations
-## then hit CTRL + C to stop the running application.
-
-#tree $MI
-
-mvn -Pgraal clean package
+# Runs Tests and Creates Graal Native Docker Image - Uses TestContainers to start the Redis Container required for Test
+mvn -Pnative clean spring-boot:build-image
