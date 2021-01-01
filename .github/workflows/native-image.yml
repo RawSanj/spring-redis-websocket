@@ -22,10 +22,10 @@ jobs:
         java-version: 11
 
     - name: Run Integration Test to generate Graal Native Config files
-      run: ./mvnw -Pnative clean test
+      run: mvn -Pnative clean test
 
     - name: Build Graal Native Docker Image with Maven
-      run: ./mvnw -Pnative -DskipTests spring-boot:build-image
+      run: mvn -Pnative -DskipTests spring-boot:build-image
 
     - name: Tag Image
       run: docker tag rawsanj/spring-redis-websocket:2.0.0-native rawsanj/spring-redis-websocket:latest
