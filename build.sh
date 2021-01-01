@@ -5,3 +5,6 @@ mvn -Pnative clean install
 
 # Runs Tests and Creates Graal Native Docker Image - Uses TestContainers to start the Redis Container required for Test
 mvn -Pnative clean spring-boot:build-image
+
+# Runs Tests and Creates Docker Image - Uses TestContainers to start the Redis Container required for Test
+mvn clean spring-boot:build-image
