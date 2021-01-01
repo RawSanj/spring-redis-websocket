@@ -22,10 +22,10 @@ jobs:
         java-version: 11
 
     - name: Check Maven version and Clean-up
-      run:  mvn -version && mvn clean --file pom.xml
+      run:  chmod +x mvnw && ./mvnw -version && ./mvnw clean
 
     - name: Build Docker Image with Maven
-      run: mvn -Pnative clean spring-boot:build-image --file pom.xml
+      run: ./mvnw -Pnative clean spring-boot:build-image
 
     - name: Tag Image
       run: docker tag rawsanj/spring-redis-websocket:2.0.0-native rawsanj/spring-redis-websocket:latest
