@@ -31,7 +31,7 @@ public class WebHttpHandler {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	static class Message {
+	public static class Message {
 		private String message;
 	}
 

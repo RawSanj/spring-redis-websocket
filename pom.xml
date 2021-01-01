@@ -14,13 +14,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.0.RELEASE</version>
+		<version>2.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<java.version>11</java.version>
 		<registry.image.name>rawsanj/spring-redis-websocket</registry.image.name>
+		<start-class>
+			com.github.rawsanj.SpringRedisWebSocketApplication
+		</start-class>
+		<spring.native.mode>reflection</spring.native.mode>
 	</properties>
 
 	<dependencies>
@@ -35,13 +39,13 @@
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
 
-		<!--Dependencies for Dev Tools and Config-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
+		<!--		Dependencies for Dev Tools and Config-->
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.boot</groupId>-->
+		<!--			<artifactId>spring-boot-devtools</artifactId>-->
+		<!--			<scope>runtime</scope>-->
+		<!--			<optional>true</optional>-->
+		<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -55,17 +59,16 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!--Dependencies for Front-end -->
+		<!--Graal Native Image Dependencies-->
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>webjars-locator</artifactId>
-			<version>0.40</version>
+			<groupId>org.springframework.experimental</groupId>
+			<artifactId>spring-graalvm-native</artifactId>
+			<version>0.8.5</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>3.5.1</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-indexer</artifactId>
 		</dependency>
 
 		<dependency>
@@ -80,7 +83,40 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>1.15.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.15.1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>redis-rc</id>
+			<name>Redis RC</name>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<plugins>
@@ -93,5 +129,91 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>native</id>
+			<build>
+				<finalName>
+					${project.artifactId}
+				</finalName>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>make-native-image-config-folder</id>
+								<phase>test-compile</phase>
+								<configuration>
+									<target>
+										<mkdir dir="target/classes/META-INF/native-image"/>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<argLine>
+								-Dorg.graalvm.nativeimage.imagecode=agent -Dspring.xml.ignore=true
+								-Dspring.spel.ignore=true
+								-agentlib:native-image-agent=access-filter-file=target/classes/access-filter.json,config-merge-dir=target/classes/META-INF/native-image
+							</argLine>
+							<includes>
+								<include>**/SpringRedisWebSocketApplicationIT.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.graalvm.nativeimage</groupId>
+						<artifactId>native-image-maven-plugin</artifactId>
+						<version>20.3.0</version>
+						<configuration>
+							<mainClass>com.github.rawsanj.SpringRedisWebSocketApplication</mainClass>
+							<imageName>spring-redis-websocket</imageName>
+							<buildArgs>
+								-Dspring.native.mode=${spring.native.mode}
+								-Dspring.spel.ignore=true
+								-Dspring.native.remove-yaml-support=true
+							</buildArgs>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>native-image</goal>
+								</goals>
+								<phase>install</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<version>${project.parent.version}</version>
+						<configuration>
+							<imageName>${registry.image.name}:${project.version}-native</imageName>
+							<image>
+								<builder>paketobuildpacks/builder:tiny</builder>
+								<env>
+									<BP_BOOT_NATIVE_IMAGE>1</BP_BOOT_NATIVE_IMAGE>
+									<!-- See https://github.com/spring-projects/spring-boot/issues/23132 -->
+									<BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+										-Dspring.native.mode=${spring.native.mode}
+										-Dspring.spel.ignore=true
+										-Dspring.native.remove-yaml-support=true
+									</BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+								</env>
+							</image>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

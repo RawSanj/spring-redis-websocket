@@ -52,7 +52,7 @@ public class RedisChatMessagePublisher {
 		}).flatMap(chatString -> {
 			// Publish Message to Redis Channels
 			return reactiveStringRedisTemplate.convertAndSend(MESSAGE_TOPIC, chatString)
-				.doOnSuccess(aLong -> log.debug("Message published to Redis Topic."))
+				.doOnSuccess(aLong -> log.debug("Total of {} Messages published to Redis Topic.", totalChatMessage))
 				.doOnError(throwable -> log.error("Error publishing message.", throwable));
 		});
 	}
