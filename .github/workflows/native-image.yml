@@ -31,13 +31,6 @@ jobs:
     - name: Reset target directory permission to current user
       run: sudo chown -R $(id -u):$(id -g) ./target
 
-    - name: Check target directory contents
-      run: |
-        ls ./target/classes/META-INF/native-image/
-        cat target/classes/META-INF/native-image/proxy-config.json
-        cat target/classes/META-INF/native-image/reflect-config.json
-        cat target/classes/META-INF/native-image/resource-config.json
-    
     - name: Build Graal Native Docker Image with Maven
       run: mvn -Pnative -DskipTests spring-boot:build-image
 
