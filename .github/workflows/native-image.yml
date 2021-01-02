@@ -22,7 +22,7 @@ jobs:
         java-version: 11
 
     - name: Run Integration Test to generate Graal Native Config files using Redis Container
-      run: docker run -it --rm -v $PWD:$PWD -w $PWD         \
+      run: docker run --rm -v $PWD:$PWD -w $PWD         \
             -v /var/run/docker.sock:/var/run/docker.sock    \
             springci/spring-graalvm-native:20.3-dev-java11  \
             mvn -Pnative clean test
