@@ -28,6 +28,9 @@ jobs:
           springci/spring-graalvm-native:20.3-dev-java11  \
           mvn -Pnative clean test
 
+    - name: Reset Target Dir permission to current user, since docker runs are root and changes permission.
+      run: sudo chown -R $(id -u):$(id -g) ./target
+    
     - name: Build Graal Native Docker Image with Maven
       run: mvn -Pnative -DskipTests spring-boot:build-image
 
