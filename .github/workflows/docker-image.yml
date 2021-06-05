@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -22,8 +22,8 @@ jobs:
     - name: Build Docker Image with Maven
       run: mvn spring-boot:build-image --file pom.xml
     - name: Tag Image
-      run: docker tag rawsanj/spring-redis-websocket:2.0.0-webflux rawsanj/spring-redis-websocket:latest
+      run: docker tag rawsanj/spring-redis-websocket:2.0.1-webflux rawsanj/spring-redis-websocket:latest
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push Image to DockerHub
-      run: docker push rawsanj/spring-redis-websocket:latest && docker push rawsanj/spring-redis-websocket:2.0.0-webflux
+      run: docker push rawsanj/spring-redis-websocket:latest && docker push rawsanj/spring-redis-websocket:2.0.1-webflux
