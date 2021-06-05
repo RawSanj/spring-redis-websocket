@@ -53,13 +53,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!--Graal Native Image Dependencies-->
-		<dependency>
-			<groupId>org.springframework.experimental</groupId>
-			<artifactId>spring-native</artifactId>
-			<version>${spring-native.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-indexer</artifactId>
@@ -129,6 +122,16 @@
 	<profiles>
 		<profile>
 			<id>native</id>
+
+			<dependencies>
+				<!--Graal Native Image Dependencies-->
+				<dependency>
+					<groupId>org.springframework.experimental</groupId>
+					<artifactId>spring-native</artifactId>
+					<version>${spring-native.version}</version>
+				</dependency>
+			</dependencies>
+
 			<build>
 				<plugins>
 					<plugin>
