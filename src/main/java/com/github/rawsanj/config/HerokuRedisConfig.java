@@ -3,6 +3,7 @@ package com.github.rawsanj.config;
 import com.github.rawsanj.messaging.RedisChatMessageListener;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,9 @@ import static com.github.rawsanj.config.ChatConstants.MESSAGE_COUNTER_KEY;
 @Profile("heroku")
 public class HerokuRedisConfig {
 
+	@Value("HEROKU_REDIS_URL_ENV_NAME")
+	private String redisUrlEnvName;
+
 	@Bean
 	ReactiveRedisConnectionFactory reactiveRedisConnectionFactory() {
 		return lettuceConnectionFactory();
@@ -37,7 +41,7 @@ public class HerokuRedisConfig {
 
 	@SneakyThrows
 	private LettuceConnectionFactory lettuceConnectionFactory() {
-		String redisUrl = System.getenv("REDIS_URL");
+		String redisUrl = System.getenv(redisUrlEnvName);
 		URI redistogoUri = new URI(redisUrl);
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redistogoUri.getHost(), redistogoUri.getPort());
 		redisStandaloneConfiguration.setPassword(redistogoUri.getUserInfo().split(":", 2)[1]);
