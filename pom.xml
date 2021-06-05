@@ -5,7 +5,7 @@
 
 	<groupId>com.github.rawsanj</groupId>
 	<artifactId>spring-redis-websocket</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>spring-redis-websocket</name>
@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.1</version>
+		<version>2.4.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -24,7 +24,9 @@
 		<start-class>
 			com.github.rawsanj.SpringRedisWebSocketApplication
 		</start-class>
-		<spring.native.mode>reflection</spring.native.mode>
+		<skipNativeImage>true</skipNativeImage>
+		<spring-native.version>0.9.2</spring-native.version>
+		<testcontainers.version>1.15.2</testcontainers.version>
 	</properties>
 
 	<dependencies>
@@ -38,14 +40,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
-
-		<!--		Dependencies for Dev Tools and Config-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.boot</groupId>-->
-		<!--			<artifactId>spring-boot-devtools</artifactId>-->
-		<!--			<scope>runtime</scope>-->
-		<!--			<optional>true</optional>-->
-		<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,8 +56,8 @@
 		<!--Graal Native Image Dependencies-->
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
-			<artifactId>spring-graalvm-native</artifactId>
-			<version>0.8.5</version>
+			<artifactId>spring-native</artifactId>
+			<version>${spring-native.version}</version>
 		</dependency>
 
 		<dependency>
@@ -75,46 +69,46 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>testcontainers</artifactId>
-			<version>1.15.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>1.15.1</version>
 			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<repositories>
 		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
-		<repository>
-			<id>redis-rc</id>
-			<name>Redis RC</name>
-			<url>https://repo1.maven.org/maven2</url>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -124,7 +118,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<imageName>${registry.image.name}:${project.version}-webflux</imageName>
+					<image>
+						<name>${registry.image.name}:${project.version}-webflux</name>
+					</image>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -134,9 +130,6 @@
 		<profile>
 			<id>native</id>
 			<build>
-				<finalName>
-					${project.artifactId}
-				</finalName>
 				<plugins>
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
@@ -172,22 +165,22 @@
 					<plugin>
 						<groupId>org.graalvm.nativeimage</groupId>
 						<artifactId>native-image-maven-plugin</artifactId>
-						<version>20.3.0</version>
+						<version>21.0.0.2</version>
 						<configuration>
 							<mainClass>com.github.rawsanj.SpringRedisWebSocketApplication</mainClass>
-							<imageName>spring-redis-websocket</imageName>
+							<imageName>${project.artifactId}</imageName>
 							<buildArgs>
-								-Dspring.native.mode=${spring.native.mode}
 								-Dspring.spel.ignore=true
 								-Dspring.native.remove-yaml-support=true
 							</buildArgs>
+							<skip>${skipNativeImage}</skip>
 						</configuration>
 						<executions>
 							<execution>
 								<goals>
 									<goal>native-image</goal>
 								</goals>
-								<phase>install</phase>
+								<phase>package</phase>
 							</execution>
 						</executions>
 					</plugin>
@@ -196,20 +189,40 @@
 						<artifactId>spring-boot-maven-plugin</artifactId>
 						<version>${project.parent.version}</version>
 						<configuration>
-							<imageName>${registry.image.name}:${project.version}-native</imageName>
 							<image>
+								<name>${registry.image.name}:${project.version}-native</name>
 								<builder>paketobuildpacks/builder:tiny</builder>
 								<env>
-									<BP_BOOT_NATIVE_IMAGE>1</BP_BOOT_NATIVE_IMAGE>
-									<!-- See https://github.com/spring-projects/spring-boot/issues/23132 -->
+									<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 									<BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
-										-Dspring.native.mode=${spring.native.mode}
 										-Dspring.spel.ignore=true
 										-Dspring.native.remove-yaml-support=true
 									</BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
 								</env>
 							</image>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.experimental</groupId>
+						<artifactId>spring-aot-maven-plugin</artifactId>
+						<version>${spring-native.version}</version>
+						<configuration>
+							<mode>native-agent</mode>
+						</configuration>
+						<executions>
+							<execution>
+								<id>test-generate</id>
+								<goals>
+									<goal>test-generate</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>generate</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

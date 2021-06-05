@@ -3,13 +3,13 @@ services:
     nginx:
         image: rawsanj/nginx-lb
         ports:
-            - "8888:80"
+            - "80:80"
         depends_on:
             - spring-chat-1
             - spring-chat-2
             - spring-chat-3
     redis:
-        image: bitnami/redis:latest
+        image: bitnami/redis:6.0.9
         environment:
             - REDIS_PASSWORD=SuperSecretRedisPassword
         ports:

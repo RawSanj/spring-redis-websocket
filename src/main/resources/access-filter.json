@@ -23,6 +23,9 @@
 		},
 		{
 			"excludeClasses": "com.github.rawsanj.test.**"
+		},
+		{
+			"excludeClasses": "org.testcontainers.**"
 		}
 	]
 }
