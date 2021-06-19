@@ -23,11 +23,10 @@ jobs:
     - name: Build Docker Image with Maven
       run: mvn spring-boot:build-image --file pom.xml
 
-    - name: Set Image Tag Version
-      run: imageTagVersion=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
-
     - name: Tag Image
-      run: docker tag rawsanj/spring-redis-websocket:${imageTagVersion}-webflux rawsanj/spring-redis-websocket:latest
+      run: |
+        imageTagVersion=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+        docker tag rawsanj/spring-redis-websocket:${imageTagVersion}-webflux rawsanj/spring-redis-websocket:latest
 
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
