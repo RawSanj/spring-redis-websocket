@@ -16,7 +16,7 @@ spec:
         spec:
             containers:
                 -   name: spring-redis-websocket
-                    image: rawsanj/spring-redis-websocket:2.0.0-webflux
+                    image: rawsanj/spring-redis-websocket:2.4.6-webflux
                     resources:
                         limits:
                             memory: "512Mi"

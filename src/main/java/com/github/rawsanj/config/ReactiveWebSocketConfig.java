@@ -28,7 +28,7 @@ public class ReactiveWebSocketConfig {
 	@Bean
 	public ChatWebSocketHandler webSocketHandler(RedisChatMessagePublisher redisChatMessagePublisher, RedisAtomicLong activeUserCounter,
 												 ObjectStringConverter objectStringConverter) {
-		Sinks.Many<ChatMessage> chatMessageSink = Sinks.many().multicast().onBackpressureBuffer();
+		Sinks.Many<ChatMessage> chatMessageSink = Sinks.many().multicast().directBestEffort();
 		return new ChatWebSocketHandler(chatMessageSink, redisChatMessagePublisher, activeUserCounter, objectStringConverter);
 	}
 
