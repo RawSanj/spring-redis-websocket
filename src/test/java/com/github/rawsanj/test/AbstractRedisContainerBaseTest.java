@@ -23,7 +23,7 @@ public class AbstractRedisContainerBaseTest {
 	private static final String REDIS_PASSWORD = "SuperSecretRedisPassword";
 	private static final Integer REDIS_PORT = 6379;
 
-	private static final GenericContainer redisContainer = new GenericContainer<>(REDIS_IMAGE)
+	private static final GenericContainer<?> redisContainer = new GenericContainer<>(REDIS_IMAGE)
 		.withExposedPorts(REDIS_PORT)
 		.withEnv("REDIS_PASSWORD", REDIS_PASSWORD)
 		.withReuse(true);
