@@ -34,10 +34,11 @@ jobs:
     - name: Build Graal Native Docker Image with Maven
       run: mvn -Pnative -DskipTests spring-boot:build-image
 
+    - name: Set Image Tag Version
+      run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
     - name: Tag Image
-      run: |
-        imageTagVersion=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
-        docker tag rawsanj/spring-redis-websocket:${imageTagVersion}-native rawsanj/spring-redis-websocket:latest
+      run: docker tag rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native rawsanj/spring-redis-websocket:latest
 
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
