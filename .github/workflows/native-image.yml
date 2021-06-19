@@ -44,4 +44,4 @@ jobs:
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
     - name: Push Image to DockerHub
-      run: docker push rawsanj/spring-redis-websocket:latest && docker push rawsanj/spring-redis-websocket:${imageTagVersion}-native
+      run: docker push rawsanj/spring-redis-websocket:latest && docker push rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native
