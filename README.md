@@ -23,7 +23,7 @@ Both JVM based application and [Graal Native Image] is supported.
 
 Ctrl + Click this button to deploy multiple instances of the spring-redis-websocket load balanced by NGINX:
 
-[![Deploy to PWD](deploy-to-pwd.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/RawSanj/spring-redis-websocket/master/src/main/docker/docker-compose.yml#)
+[![Deploy to PWD](deploy-to-pwd.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/RawSanj/spring-redis-websocket/master/src/main/docker/docker-compose.yml)
 
 ### Installation and Configuration
 
