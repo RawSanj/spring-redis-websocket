@@ -5,7 +5,7 @@
 
 	<groupId>com.github.rawsanj</groupId>
 	<artifactId>spring-redis-websocket</artifactId>
-	<version>2.4.6</version>
+	<version>2.5.2</version>
 	<packaging>jar</packaging>
 
 	<name>spring-redis-websocket</name>
@@ -14,19 +14,15 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.6</version>
+		<version>2.5.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<java.version>11</java.version>
 		<registry.image.name>rawsanj/spring-redis-websocket</registry.image.name>
-		<start-class>
-			com.github.rawsanj.SpringRedisWebSocketApplication
-		</start-class>
 		<skipNativeImage>true</skipNativeImage>
-		<spring-native.version>0.9.2</spring-native.version>
-		<testcontainers.version>1.15.2</testcontainers.version>
+		<testcontainers.version>1.15.3</testcontainers.version>
 	</properties>
 
 	<dependencies>
@@ -63,7 +59,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
@@ -129,6 +125,11 @@
 		<profile>
 			<id>native</id>
 
+			<properties>
+				<skipNativeImage>true</skipNativeImage>
+				<spring-native.version>0.10.1</spring-native.version>
+			</properties>
+
 			<dependencies>
 				<!--Graal Native Image Dependencies-->
 				<dependency>
@@ -141,44 +142,27 @@
 			<build>
 				<plugins>
 					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>make-native-image-config-folder</id>
-								<phase>test-compile</phase>
-								<configuration>
-									<target>
-										<mkdir dir="target/classes/META-INF/native-image"/>
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<configuration>
 							<argLine>
-								-Dorg.graalvm.nativeimage.imagecode=agent -Dspring.xml.ignore=true
-								-Dspring.spel.ignore=true
-								-agentlib:native-image-agent=access-filter-file=target/classes/access-filter.json,config-merge-dir=target/classes/META-INF/native-image
+								-DspringAot=true -agentlib:native-image-agent=access-filter-file=target/classes/access-filter.json,config-merge-dir=target/classes/META-INF/native-image
 							</argLine>
 							<includes>
-								<include>**/SpringRedisWebSocketApplicationIT.java</include>
+<!--								<include>**/SpringRedisWebSocketApplicationIT.java</include>-->
 							</includes>
 						</configuration>
 					</plugin>
 					<plugin>
-						<groupId>org.graalvm.nativeimage</groupId>
-						<artifactId>native-image-maven-plugin</artifactId>
-						<version>21.0.0.2</version>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+						<version>0.9.0</version>
 						<configuration>
 							<mainClass>com.github.rawsanj.SpringRedisWebSocketApplication</mainClass>
 							<imageName>${project.artifactId}</imageName>
 							<buildArgs>
+								-DspringAot=true
+								-Dspring.xml.ignore=true
 								-Dspring.spel.ignore=true
 								-Dspring.native.remove-yaml-support=true
 							</buildArgs>
@@ -187,7 +171,7 @@
 						<executions>
 							<execution>
 								<goals>
-									<goal>native-image</goal>
+									<goal>build</goal>
 								</goals>
 								<phase>package</phase>
 							</execution>
@@ -204,6 +188,8 @@
 								<env>
 									<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 									<BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+										-DspringAot=true
+										-Dspring.xml.ignore=true
 										-Dspring.spel.ignore=true
 										-Dspring.native.remove-yaml-support=true
 									</BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
@@ -215,9 +201,6 @@
 						<groupId>org.springframework.experimental</groupId>
 						<artifactId>spring-aot-maven-plugin</artifactId>
 						<version>${spring-native.version}</version>
-						<configuration>
-							<mode>native-agent</mode>
-						</configuration>
 						<executions>
 							<execution>
 								<id>test-generate</id>

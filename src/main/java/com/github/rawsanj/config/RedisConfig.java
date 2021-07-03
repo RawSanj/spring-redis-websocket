@@ -32,7 +32,7 @@ public class RedisConfig {
 	}
 
 	@Bean
-	ReactiveStringRedisTemplate template(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+	ReactiveStringRedisTemplate reactiveStringRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
 		return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
 	}
 

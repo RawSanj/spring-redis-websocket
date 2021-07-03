@@ -62,13 +62,13 @@ public class SpringRedisWebSocketApplicationIT extends AbstractRedisContainerBas
 						log.info("Message Received in Test Connection: {}", webSocketMessage.getPayloadAsText());
 						ChatMessage chatMessage = objectMapper.readValue(webSocketMessage.getPayloadAsText(), ChatMessage.class);
 						assertThat(chatMessage.getMessage()).isEqualTo(message);
-						messageCounter.incrementAndGet();
+						assertThat(chatMessage.getId()).isEqualTo(messageCounter.incrementAndGet());
 					} catch (JsonProcessingException e) {
 						throw new RuntimeException(e);
 					}
 				})
 				.then(session.close())
-		).timeout(Duration.ofSeconds(2));
+		).timeout(Duration.ofSeconds(5)); // Assuming it takes 1 seconds to process one message to be on safer side.
 
 		StepVerifier.create(executeWebSocketConnectMono)
 			.then(() -> postMessages(messageCount))

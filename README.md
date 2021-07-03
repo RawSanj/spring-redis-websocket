@@ -16,6 +16,9 @@ Both JVM based application and [Graal Native Image] is supported.
 >1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
 >2. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
 
+> The reactive spring-boot 2.4.6 based spring-redis-websocket application can be found in below:
+>1. [Spring-Boot 2.4.6: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.4.6)
+
 ### Deploy to Play-with-Docker
 
 Ctrl + Click this button to deploy multiple instances of the spring-redis-websocket load balanced by NGINX:
@@ -40,7 +43,7 @@ Hence, this application is configured to use GraalVM native image tracing agent 
 1. To run integration test which uses [Redis TestContainers](https://www.testcontainers.org/supported_docker_environment) so [Docker] should be configured properly to run [Testcontainers]
 2. You also need to install [GraalVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.0.0.2) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
    ```sh
-   $ sdk install java 21.0.0.2.r11-grl  	# Using [SDKMAN](https://sdkman.io/jdks) install GraalVM distribution of JDK
+   $ sdk install java 21.1.0.r11-grl       # Using [SDKMAN](https://sdkman.io/jdks) install GraalVM distribution of JDK
    
    $ gu install native-image 		# Then install [native-image](https://www.graalvm.org/reference-manual/native-image) component
    ```
@@ -99,9 +102,9 @@ $ mvn -Pnative clean spring-boot:build-image
 Run docker image:
 
 ```sh
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.4.6-webflux # JVM based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.5.2-webflux # JVM based Docker Image
 
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.4.6-native  # Graal Native Image based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.5.2-native  # Graal Native Image based Docker Image
 ```
 
 #### Run multiple instances using docker-compose locally

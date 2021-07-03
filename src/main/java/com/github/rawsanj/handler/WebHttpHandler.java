@@ -1,5 +1,6 @@
 package com.github.rawsanj.handler;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.rawsanj.messaging.RedisChatMessagePublisher;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class WebHttpHandler {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
+	@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 	public static class Message {
 		private String message;
 	}

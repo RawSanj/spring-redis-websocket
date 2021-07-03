@@ -26,6 +26,9 @@
 		},
 		{
 			"excludeClasses": "org.testcontainers.**"
+		},
+		{
+			"excludeClasses": "reactor.test.**"
 		}
 	]
 }
