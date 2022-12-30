@@ -36,9 +36,9 @@ public class AbstractRedisContainerBaseTest {
 			redisContainer.start();
 
 			// Override Redis configuration
-			String redisContainerIP = "spring.redis.host=" + redisContainer.getContainerIpAddress();
-			String redisContainerPort = "spring.redis.port=" + redisContainer.getMappedPort(REDIS_PORT);
-			String redisContainerPassword = "spring.redis.password=" + REDIS_PASSWORD;
+			String redisContainerIP = "spring.data.redis.host=" + redisContainer.getHost();
+			String redisContainerPort = "spring.data.redis.port=" + redisContainer.getMappedPort(REDIS_PORT);
+			String redisContainerPassword = "spring.data.redis.password=" + REDIS_PASSWORD;
 			TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context, redisContainerIP, redisContainerPort, redisContainerPassword); // <- This is how you override the configuration in runtime.
 		}
 	}

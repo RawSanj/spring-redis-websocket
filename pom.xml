@@ -5,24 +5,24 @@
 
 	<groupId>com.github.rawsanj</groupId>
 	<artifactId>spring-redis-websocket</artifactId>
-	<version>2.5.2</version>
+	<version>3.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>spring-redis-websocket</name>
-	<description>Spring Boot Project for WebSocket Notification/Chat using Redis Pub/Sub - Java 11</description>
+	<description>Spring Boot 3.x - Project for WebSocket Notification/Chat using Redis Pub/Sub - Java 17</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
+		<version>3.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<registry.image.name>rawsanj/spring-redis-websocket</registry.image.name>
 		<skipNativeImage>true</skipNativeImage>
-		<testcontainers.version>1.15.3</testcontainers.version>
+		<testcontainers.version>1.17.6</testcontainers.version>
 	</properties>
 
 	<dependencies>
@@ -47,11 +47,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-indexer</artifactId>
 		</dependency>
 
 		<dependency>
@@ -86,27 +81,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<repositories>
-		<repository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -117,6 +91,14 @@
 						<name>${registry.image.name}:${project.version}-webflux</name>
 					</image>
 				</configuration>
+				<executions>
+					<execution>
+						<id>process-aot</id>
+						<goals>
+							<goal>process-aot</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -127,91 +109,38 @@
 
 			<properties>
 				<skipNativeImage>true</skipNativeImage>
-				<spring-native.version>0.10.1</spring-native.version>
 			</properties>
-
-			<dependencies>
-				<!--Graal Native Image Dependencies-->
-				<dependency>
-					<groupId>org.springframework.experimental</groupId>
-					<artifactId>spring-native</artifactId>
-					<version>${spring-native.version}</version>
-				</dependency>
-			</dependencies>
 
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
 						<configuration>
-							<argLine>
-								-DspringAot=true -agentlib:native-image-agent=access-filter-file=target/classes/access-filter.json,config-merge-dir=target/classes/META-INF/native-image
-							</argLine>
-							<includes>
-<!--								<include>**/SpringRedisWebSocketApplicationIT.java</include>-->
-							</includes>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>native-maven-plugin</artifactId>
-						<version>0.9.0</version>
-						<configuration>
-							<mainClass>com.github.rawsanj.SpringRedisWebSocketApplication</mainClass>
-							<imageName>${project.artifactId}</imageName>
-							<buildArgs>
-								-DspringAot=true
-								-Dspring.xml.ignore=true
-								-Dspring.spel.ignore=true
-								-Dspring.native.remove-yaml-support=true
-							</buildArgs>
-							<skip>${skipNativeImage}</skip>
+							<image>
+								<name>${registry.image.name}:${project.version}-native</name>
+							</image>
 						</configuration>
 						<executions>
 							<execution>
+								<id>process-aot</id>
 								<goals>
-									<goal>build</goal>
+									<goal>process-aot</goal>
 								</goals>
-								<phase>package</phase>
 							</execution>
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<version>${project.parent.version}</version>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
 						<configuration>
-							<image>
-								<name>${registry.image.name}:${project.version}-native</name>
-								<builder>paketobuildpacks/builder:tiny</builder>
-								<env>
-									<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-									<BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
-										-DspringAot=true
-										-Dspring.xml.ignore=true
-										-Dspring.spel.ignore=true
-										-Dspring.native.remove-yaml-support=true
-									</BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
-								</env>
-							</image>
+							<skip>${skipNativeImage}</skip>
 						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.springframework.experimental</groupId>
-						<artifactId>spring-aot-maven-plugin</artifactId>
-						<version>${spring-native.version}</version>
 						<executions>
 							<execution>
-								<id>test-generate</id>
+								<id>build-native-binary</id>
 								<goals>
-									<goal>test-generate</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>generate</id>
-								<goals>
-									<goal>generate</goal>
+									<goal>compile-no-fork</goal>
 								</goals>
 							</execution>
 						</executions>

@@ -1,0 +1,7 @@
+spring:
+    data.redis:
+        host: localhost
+        password: SuperSecretRedisPassword
+        port: 6379
+    application:
+        name: spring-redis-reactive-websocket

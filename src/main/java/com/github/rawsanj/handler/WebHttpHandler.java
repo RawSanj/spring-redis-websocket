@@ -1,10 +1,7 @@
 package com.github.rawsanj.handler;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.github.rawsanj.messaging.RedisChatMessagePublisher;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.rawsanj.model.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +15,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
-@Configuration(proxyBeanMethods=false)
+@Configuration(proxyBeanMethods = false)
 public class WebHttpHandler {
 
 	@Bean
@@ -27,14 +24,6 @@ public class WebHttpHandler {
 			.andRoute(POST("/message"), request -> request.bodyToMono(Message.class)
 				.flatMap(message -> redisChatMessagePublisher.publishChatMessage(message.getMessage()))
 				.flatMap(aLong -> ServerResponse.ok().bodyValue(new Message("Message Sent Successfully!."))));
-	}
-
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-	public static class Message {
-		private String message;
 	}
 
 }

@@ -2,14 +2,14 @@ package com.github.rawsanj.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.rawsanj.handler.WebHttpHandler;
 import com.github.rawsanj.model.ChatMessage;
+import com.github.rawsanj.model.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SpringRedisWebSocketApplicationIT extends AbstractRedisContainerBaseTest {
+class SpringRedisWebSocketApplicationIT extends AbstractRedisContainerBaseTest {
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -83,12 +83,12 @@ public class SpringRedisWebSocketApplicationIT extends AbstractRedisContainerBas
 		IntStream.range(0, messageCount)
 			.forEach(ignored -> testClient.post()
 				.uri("/message")
-				.bodyValue(new WebHttpHandler.Message(message))
+				.bodyValue(new Message(message))
 				.exchange()
 				.expectStatus()
 				.is2xxSuccessful()
-				.expectBody(WebHttpHandler.Message.class)
-				.isEqualTo(new WebHttpHandler.Message(messageResponse)));
+				.expectBody(Message.class)
+				.isEqualTo(new Message(messageResponse)));
 	}
 
 }

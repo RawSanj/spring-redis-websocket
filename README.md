@@ -4,7 +4,7 @@
 
 ## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
 
-Scalable Java 11 Spring Boot WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using
+Scalable Java 17 Spring Boot 3.x WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using
 Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different
 instances.
 
@@ -16,7 +16,7 @@ Both JVM based application and [Graal Native Image] is supported.
 >1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
 >2. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
 
-> The reactive spring-boot 2.x based spring-redis-websocket application can be found in below:
+> The older reactive spring-boot 2.x (java 11) based spring-redis-websocket application can be found in below:
 >1. [Spring-Boot 2.4.6: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.4.6)
 >2. [Spring-Boot 2.5.2: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.5.2)
 
@@ -42,11 +42,10 @@ This application uses Spring Data Redis APIs which doesn't have default Graal hi
 Hence, this application is configured to use GraalVM native image tracing agent allows intercepting reflection, resources or proxy usage on the JVM by running simple Integration Tests which requires Redis.
 
 1. To run integration test which uses [Redis TestContainers](https://www.testcontainers.org/supported_docker_environment) so [Docker] should be configured properly to run [Testcontainers]
-2. You also need to install [GraalVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-21.0.0.2) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
+2. You also need to install [GraalVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
    ```sh
-   $ sdk install java 21.1.0.r11-grl       # Using [SDKMAN](https://sdkman.io/jdks) install GraalVM distribution of JDK
-   
-   $ gu install native-image 		# Then install [native-image](https://www.graalvm.org/reference-manual/native-image) component
+   $ sdk install java 22.3.r17-nik         # Using [SDKMAN](https://sdkman.io/jdks) install GraalVM distribution of JDK
+   $ sdk use java 22.3.r17-nik
    ```
 
 ##### Clone repo:
@@ -71,7 +70,7 @@ Build and run the **spring-redis-websocket** native image:
 ```sh
 $ cd spring-redis-websocket
 
-$ mvn -Pnative clean package -DskipNativeImage=false
+$ mvn -Pnative clean package
 
 $ target/spring-redis-websocket # run the executable binary
 ```
@@ -103,9 +102,9 @@ $ mvn -Pnative clean spring-boot:build-image
 Run docker image:
 
 ```sh
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.5.2-webflux # JVM based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.0.1-webflux # JVM based Docker Image
 
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:2.5.2-native  # Graal Native Image based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.0.1-native  # Graal Native Image based Docker Image
 ```
 
 #### Run multiple instances using docker-compose locally
