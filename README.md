@@ -16,8 +16,9 @@ Both JVM based application and [Graal Native Image] is supported.
 >1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
 >2. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
 
-> The reactive spring-boot 2.4.6 based spring-redis-websocket application can be found in below:
+> The reactive spring-boot 2.x based spring-redis-websocket application can be found in below:
 >1. [Spring-Boot 2.4.6: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.4.6)
+>2. [Spring-Boot 2.5.2: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.5.2)
 
 ### Deploy to Play-with-Docker
 
