@@ -10,7 +10,7 @@ instances.
 
 Both JVM based application and [Graal Native Image] is supported.
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy/?template=https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
 
 > The older non-reactive servlet based spring-redis-websocket application can be found in below:
 >1. [Spring-Boot 2.3: Java-11 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)

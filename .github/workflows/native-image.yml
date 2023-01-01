@@ -13,23 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
+    - uses: actions/checkout@v3
+    - uses: graalvm/setup-graalvm@v1
       with:
-        java-version: 11
-
-    - name: Run Integration Test to generate Graal Native Config files using Redis Container
-      run: |
-        docker run --rm -v $PWD:$PWD -w $PWD              \
-          -v /var/run/docker.sock:/var/run/docker.sock    \
-          springci/spring-graalvm-native:20.3-dev-java11  \
-          mvn -Pnative clean test
-
-    - name: Reset target directory permission to current user
-      run: sudo chown -R $(id -u):$(id -g) ./target
+        version: 'latest'
+        java-version: '17'
+        components: 'native-image'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Graal Native Docker Image with Maven
       run: mvn -Pnative -DskipTests spring-boot:build-image
