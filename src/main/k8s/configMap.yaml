@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
     name: spring-redis-websocket-config
 data:
-    SPRING_REDIS_HOST: 'redis-service'
-    SPRING_REDIS_PASSWORD: 'SuperSecretRedisPassword'
-    SPRING_REDIS_PORT: '6379'
+    SPRING_DATA_REDIS_HOST: 'redis-service'
+    SPRING_DATA_REDIS_PASSWORD: 'SuperSecretRedisPassword'
+    SPRING_DATA_REDIS_PORT: '6379'

@@ -19,8 +19,8 @@ services:
     spring-chat-1:
         image: rawsanj/spring-redis-websocket:3.0.1-webflux
         environment:
-            - SPRING_REDIS_HOST=redis
-            - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
+            - SPRING_DATA_REDIS_HOST=redis
+            - SPRING_DATA_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
         depends_on:
@@ -28,8 +28,8 @@ services:
     spring-chat-2:
         image: rawsanj/spring-redis-websocket:3.0.1-webflux
         environment:
-            - SPRING_REDIS_HOST=redis
-            - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
+            - SPRING_DATA_REDIS_HOST=redis
+            - SPRING_DATA_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
         depends_on:
@@ -37,8 +37,8 @@ services:
     spring-chat-3:
         image: rawsanj/spring-redis-websocket:3.0.1-webflux
         environment:
-            - SPRING_REDIS_HOST=redis
-            - SPRING_REDIS_PASSWORD=SuperSecretRedisPassword
+            - SPRING_DATA_REDIS_HOST=redis
+            - SPRING_DATA_REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
             - "8080"
         depends_on:
