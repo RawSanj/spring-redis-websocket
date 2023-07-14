@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.scheduler.Schedulers;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
@@ -23,7 +24,9 @@ public class WebHttpHandler {
 		return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).bodyValue(html))
 			.andRoute(POST("/message"), request -> request.bodyToMono(Message.class)
 				.flatMap(message -> redisChatMessagePublisher.publishChatMessage(message.getMessage()))
-				.flatMap(aLong -> ServerResponse.ok().bodyValue(new Message("Message Sent Successfully!."))));
+				.flatMap(aLong -> ServerResponse.ok().bodyValue(new Message("Message Sent Successfully!.")))
+					.subscribeOn(Schedulers.boundedElastic()));
+
 	}
 
 }
