@@ -11,6 +11,7 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 @Slf4j
 public class ChatWebSocketHandler implements WebSocketHandler {
@@ -40,15 +41,19 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 		Mono<Void> inputMessage = webSocketSession.receive()
 			.flatMap(webSocketMessage -> redisChatMessagePublisher.publishChatMessage(webSocketMessage.getPayloadAsText()))
 			.doOnSubscribe(subscription -> {
-				long activeUserCount = activeUserCounter.incrementAndGet();
-				log.info("User '{}' Connected. Total Active Users: {}", webSocketSession.getId(), activeUserCount);
-				chatMessageSink.tryEmitNext(new ChatMessage(0, "CONNECTED", "CONNECTED", activeUserCount));
+				Mono.fromRunnable(() -> {
+					long activeUserCount = activeUserCounter.incrementAndGet();
+					log.info("User '{}' Connected. Total Active Users: {}", webSocketSession.getId(), activeUserCount);
+					chatMessageSink.tryEmitNext(new ChatMessage(0, "CONNECTED", "CONNECTED", activeUserCount));
+				}).subscribeOn(Schedulers.boundedElastic()).subscribe();
 			})
 			.doOnError(throwable -> log.error("Error Occurred while sending message to Redis.", throwable))
 			.doFinally(signalType -> {
-				long activeUserCount = activeUserCounter.decrementAndGet();
-				log.info("User '{}' Disconnected. Total Active Users: {}", webSocketSession.getId(), activeUserCount);
-				chatMessageSink.tryEmitNext(new ChatMessage(0, "DISCONNECTED", "DISCONNECTED", activeUserCount));
+				Mono.fromRunnable(() -> {
+					long activeUserCount = activeUserCounter.decrementAndGet();
+					log.info("User '{}' Disconnected. Total Active Users: {}", webSocketSession.getId(), activeUserCount);
+					chatMessageSink.tryEmitNext(new ChatMessage(0, "DISCONNECTED", "DISCONNECTED", activeUserCount));
+				}).subscribeOn(Schedulers.boundedElastic()).subscribe();
 			})
 			.then();
 
