@@ -33,7 +33,7 @@ Install and run [Redis] locally or on Docker.
 
 To run Redis in Docker:
 ```sh
-$ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/redis:6.0.9
+$ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/redis:7.2.3
 ```
 
 ##### Pre-requisite for Graal Native Image:

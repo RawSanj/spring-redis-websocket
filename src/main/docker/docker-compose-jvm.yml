@@ -9,7 +9,7 @@ services:
             - spring-chat-2
             - spring-chat-3
     redis:
-        image: bitnami/redis:6.0.9
+        image: bitnami/redis:7.2.3
         environment:
             - REDIS_PASSWORD=SuperSecretRedisPassword
         ports:
