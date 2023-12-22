@@ -1,8 +1,9 @@
 # spring-redis-websocket
 
-![Docker Multi-Platform Build](https://img.shields.io/github/actions/workflow/status/RawSanj/spring-redis-websocket/docker-image.yml?style=flat-square&logo=docker&label=multi-platform%20build&link=https%3A%2F%2Fgithub.com%2FRawSanj%2Fspring-redis-websocket%2Factions%2Fworkflows%2Fdocker-image.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/rawsanj/spring-redis-websocket?style=flat-square&logo=docker&color=red&link=https%3A%2F%2Fhub.docker.com%2Frepository%2Fdocker%2Frawsanj%2Fspring-redis-websocket%2Fgeneral)
-![Spring Chat Website](https://img.shields.io/website?url=https%3A%2F%2Fchat.kasmx.dedyn.io%2Factuator%2Fhealth&up_message=online&up_color=green&down_message=offline&down_color=red&style=flat-square&logo=signal&logoColor=white&label=spring-chat&labelColor=purple&link=chat.kasmx.dedyn.io)
-![GitHub License](https://img.shields.io/github/license/rawsanj/spring-redis-websocket?style=flat-square&logo=apache&logoColor=red&link=https%3A%2F%2Fgithub.com%2FRawSanj%2Fspring-redis-websocket%2Fblob%2Fmaster%2FLICENSE)
+[![Docker Multi-Platform Build](https://img.shields.io/github/actions/workflow/status/RawSanj/spring-redis-websocket/docker-image.yml?style=flat-square&logo=docker&label=multi-platform%20build)](https://github.com/RawSanj/spring-redis-websocket/actions/workflows/native-image.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/rawsanj/spring-redis-websocket?style=flat-square&logo=docker&color=orange)](https://hub.docker.com/repository/docker/rawsanj/spring-redis-websocket/general)
+[![Spring Chat Website](https://img.shields.io/website?url=https%3A%2F%2Fchat.kasmx.dedyn.io%2Factuator%2Fhealth&up_message=online&up_color=green&down_message=offline&down_color=red&style=flat-square&logo=signal&logoColor=white&label=spring-chat&labelColor=purple)](https://chat.kasmx.dedyn.io)
+[![GitHub License](https://img.shields.io/github/license/rawsanj/spring-redis-websocket?style=flat-square&logo=apache&logoColor=red)](https://github.com/RawSanj/spring-redis-websocket?tab=Apache-2.0-1-ov-file)
 
 ## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
 
