@@ -8,7 +8,8 @@ Scalable Java 17 Spring Boot 3.x WebFlux Chat Application to demonstrate use of 
 Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different
 instances.
 
-Both JVM based application and [GraalVM Native Image] is supported.
+Both JVM based application and [GraalVM Native Image] is supported. 
+Additionally, the Docker Image for JVM base is available for AMD64 and ARM64 architecture. 
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy/?template=https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
 
