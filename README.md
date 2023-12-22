@@ -22,7 +22,7 @@ Both JVM based application and [Graal Native Image] is supported.
 
 ### Deploy to Play-with-Docker
 
-Ctrl + Click this button to deploy multiple instances of the spring-redis-websocket load balanced by NGINX:
+Ctrl + Click this button to deploy multiple instances of the spring-redis-websocket load balanced by [Traefik]:
 
 [![Deploy to PWD](deploy-to-pwd.png)](https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/RawSanj/spring-redis-websocket/master/src/main/docker/docker-compose.yml)
 
@@ -102,15 +102,14 @@ $ mvn -Pnative clean spring-boot:build-image
 Run docker image:
 
 ```sh
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.0.1-webflux # JVM based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-webflux # JVM based Docker Image
 
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.0.1-native  # Graal Native Image based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-native  # Graal Native Image based Docker Image
 ```
 
 #### Run multiple instances using docker-compose locally
 
-Run multiple instances of *spring-redis-websocket* locally load balanced via Ngnix connected to redis container in
-Docker:
+Run multiple instances of *spring-redis-websocket* locally load balanced via [Traefik] connected to redis container in Docker:
 
 ```sh
 $ cd src/main/docker
@@ -173,7 +172,7 @@ $ kubectl apply -f src/main/k8s
 * [Bootstrap] - Bootstrap is an open source toolkit for developing with HTML, CSS, and JS. Custom Bootstrap theme
 	- [Bootswatch Sketch].
 * [Docker] - Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications.
-* [NGINX] - NGINX is High Performance Load Balancer, Web Server, & Reverse Proxy.
+* [Traefik] - Traefik is a Cloud Native Application Proxy - Simplifies networking complexity while designing, deploying, and operating applications.
 * [Kubernetes] - Kubernetes is an open-source system for automating deployment, scaling, and management of containerized
   applications.
 
@@ -204,7 +203,7 @@ Copyright (c) 2023 Sanjay Rawat
 
 [Docker]: <https://www.docker.com>
 
-[NGINX]: <https://www.nginx.com>
+[Traefik]: <https://traefik.io/traefik>
 
 [Kubernetes]: <https://kubernetes.io>
 
