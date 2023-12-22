@@ -1,7 +1,7 @@
 FROM ghcr.io/graalvm/native-image-community:17-muslib as build
 WORKDIR app
 COPY ../../.. .
-RUN ls -la
+RUN ls $TOOLCHAIN_DIR/bin
 RUN ./mvnw -Pnative clean package -DskipNativeImage=false --file pom.xml
 
 FROM ubuntu:jammy
