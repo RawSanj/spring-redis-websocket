@@ -1,4 +1,4 @@
-name: Native Docker Image
+name: Docker GraalVM Native Image - [AMD64 & ARM64]
 
 on:
   push:
@@ -7,32 +7,38 @@ on:
     branches: [ master ]
 
 jobs:
-
-  build-native-docker-image:
-    name: Build Docker Image of Graal Native Image of the application
+  build:
+    name: Build Multi Platform Docker GraalVM Native Image
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - uses: graalvm/setup-graalvm@v1
-      with:
-        version: 'latest'
-        java-version: '17'
-        components: 'native-image'
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Build Graal Native Docker Image with Maven
-      run: mvn -Pnative -DskipTests spring-boot:build-image
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-    - name: Set Image Tag Version
-      run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Tag Image
-      run: docker tag rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native rawsanj/spring-redis-websocket:latest
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Login to DockerHub Registry
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Set Image Tag Version
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+      - run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-    - name: Push Image to DockerHub
-      run: docker push rawsanj/spring-redis-websocket:latest && docker push rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/main/docker/Dockerfile.native
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native

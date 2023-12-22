@@ -1,6 +1,6 @@
 FROM maven:3.8.8-eclipse-temurin-17 as build
 WORKDIR app
-COPY . .
+COPY ../../.. .
 RUN mvn clean package --file pom.xml
 
 FROM eclipse-temurin:17-jdk-jammy

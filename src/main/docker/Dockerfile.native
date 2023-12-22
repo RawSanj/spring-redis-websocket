@@ -1,0 +1,8 @@
+FROM ghcr.io/graalvm/native-image-community:17-muslib as build
+WORKDIR app
+COPY ../../.. .
+RUN mvn -Pnative clean package -DskipNativeImage=false --file pom.xml
+
+FROM ubuntu:jammy
+COPY --from=build app/target/spring-redis-websocket spring-redis-websocket
+CMD ["/spring-redis-websocket"]

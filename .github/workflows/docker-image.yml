@@ -1,4 +1,4 @@
-name: DockerHub Image - [AMD64 & ARM64]
+name: DockerHub JVM Image - [AMD64 & ARM64]
 
 on:
   push:
@@ -38,6 +38,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: src/main/docker/Dockerfile.jvm
           platforms: linux/amd64,linux/arm64
           push: true
           tags: rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-webflux

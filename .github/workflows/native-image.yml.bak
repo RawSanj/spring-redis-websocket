@@ -1,0 +1,38 @@
+name: Native Docker Image
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build-native-docker-image:
+    name: Build Docker Image of Graal Native Image of the application
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - uses: graalvm/setup-graalvm@v1
+      with:
+        version: 'latest'
+        java-version: '17'
+        components: 'native-image'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Graal Native Docker Image with Maven
+      run: mvn -Pnative -DskipTests spring-boot:build-image
+
+    - name: Set Image Tag Version
+      run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+    - name: Tag Image
+      run: docker tag rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native rawsanj/spring-redis-websocket:latest
+
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Push Image to DockerHub
+      run: docker push rawsanj/spring-redis-websocket:latest && docker push rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native
