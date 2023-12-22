@@ -4,5 +4,5 @@ COPY . .
 RUN mvn clean package --file pom.xml
 
 FROM eclipse-temurin:17-jdk-jammy
-COPY --from=build target/spring-redis-websocket-3.2.0.jar app.jar
+COPY --from=build app/target/spring-redis-websocket-3.2.0.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
