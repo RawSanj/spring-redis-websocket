@@ -5,3 +5,8 @@ spring:
         port: 6379
     application:
         name: spring-redis-reactive-websocket
+management:
+    endpoint:
+        health:
+            enabled: true
+            show-details: always
