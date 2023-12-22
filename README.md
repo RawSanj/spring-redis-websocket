@@ -8,7 +8,7 @@ Scalable Java 17 Spring Boot 3.x WebFlux Chat Application to demonstrate use of 
 Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different
 instances.
 
-Both JVM based application and [Graal Native Image] is supported.
+Both JVM based application and [GraalVM Native Image] is supported.
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy/?template=https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-web-2.3)
 
@@ -17,8 +17,8 @@ Both JVM based application and [Graal Native Image] is supported.
 >2. [Spring-Boot 1.5: Java-8 version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-1.5.x)
 
 > The older reactive spring-boot 2.x (java 11) based spring-redis-websocket application can be found in below:
->1. [Spring-Boot 2.4.6: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.4.6)
->2. [Spring-Boot 2.5.2: Java-11 Reactive JVM & Graal Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.5.2)
+>1. [Spring-Boot 2.4.6: Java-11 Reactive JVM & GraalVM Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.4.6)
+>2. [Spring-Boot 2.5.2: Java-11 Reactive JVM & GraalVM Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.5.2)
 
 ### Deploy to Play-with-Docker
 
@@ -36,15 +36,15 @@ To run Redis in Docker:
 $ docker run -d -p 6379:6379 -e REDIS_PASSWORD=SuperSecretRedisPassword bitnami/redis:7.2.3
 ```
 
-##### Pre-requisite for Graal Native Image:
-This application uses Spring Data Redis APIs which doesn't have default Graal hints/config and graal-native image fails to run with errors.
+##### Pre-requisite for GraalVM Native Image:
+This application uses Spring Data Redis APIs which doesn't have default GraalVM hints/config and graalvm-native image fails to run with errors.
 
-Hence, this application is configured to use GraalVM native image tracing agent allows intercepting reflection, resources or proxy usage on the JVM by running simple Integration Tests which requires Redis.
+Hence, this application is configured to use GraalVMVM native image tracing agent allows intercepting reflection, resources or proxy usage on the JVM by running simple Integration Tests which requires Redis.
 
 1. To run integration test which uses [Redis TestContainers](https://www.testcontainers.org/supported_docker_environment) so [Docker] should be configured properly to run [Testcontainers]
-2. You also need to install [GraalVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
+2. You also need to install [GraalVMVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
    ```sh
-   $ sdk install java 22.3.r17-nik         # Using [SDKMAN](https://sdkman.io/jdks) install GraalVM distribution of JDK
+   $ sdk install java 22.3.r17-nik         # Using [SDKMAN](https://sdkman.io/jdks) install GraalVMVM distribution of JDK
    $ sdk use java 22.3.r17-nik
    ```
 
@@ -64,7 +64,7 @@ $ mvn clean package
 $ mvn spring-boot:run
 ```
 
-#### Build Graal Native Image of the application:
+#### Build GraalVM Native Image of the application:
 
 Build and run the **spring-redis-websocket** native image:
 ```sh
@@ -93,7 +93,7 @@ Build Docker image:
 $ mvn clean spring-boot:build-image
 ```
 
-Build Graal Native Docker image:
+Build GraalVM Native Docker image:
 
 ```sh
 $ mvn -Pnative clean spring-boot:build-image
@@ -104,7 +104,7 @@ Run docker image:
 ```sh
 $ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-webflux # JVM based Docker Image
 
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-native  # Graal Native Image based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-native  # GraalVM Native Image based Docker Image
 ```
 
 #### Run multiple instances using docker-compose locally
@@ -163,7 +163,7 @@ $ kubectl apply -f src/main/k8s
 * [Spring Boot] - An opinionated framework for building production-ready Spring applications. It favors convention over
   configuration and is designed to get you up and running as quickly as possible.
 * [Spring Data Redis] - Spring Data Redis provides easy configuration and access to Redis from Spring applications.
-* [Graal Native Image] - Native Image is a technology to ahead-of-time compile Java code to a standalone executable,
+* [GraalVM Native Image] - Native Image is a technology to ahead-of-time compile Java code to a standalone executable,
   called a native image.
 * [Redis] - Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and
   message broker.
@@ -193,7 +193,7 @@ Copyright (c) 2023 Sanjay Rawat
 
 [Spring Data Redis]: <https://projects.spring.io/spring-data-redis>
 
-[Graal Native Image]: <https://www.graalvm.org/reference-manual/native-image>
+[GraalVM Native Image]: <https://www.graalvm.org/reference-manual/native-image>
 
 [Testcontainers]: <https://www.testcontainers.org>
 
