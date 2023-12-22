@@ -36,4 +36,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: docker push rawsanj/spring-redis-websocket:3.2.0-webflux
+          tags: rawsanj/spring-redis-websocket:3.2.0-webflux
