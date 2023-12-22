@@ -27,8 +27,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-#      - name: Set Image Tag Version
-#        run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      - name: Set Image Tag Version
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+        run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -36,4 +39,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: rawsanj/spring-redis-websocket:3.2.0-webflux
+          tags: rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-webflux
