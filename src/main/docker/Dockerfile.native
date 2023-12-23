@@ -4,5 +4,6 @@ COPY ../../.. ./
 RUN ./mvnw -Pnative clean package -DskipNativeImage=false --file pom.xml
 
 FROM ubuntu:jammy
+ENV RUNTIME_PLATFORM=NATIVE
 COPY --from=build /app/target/spring-redis-websocket spring-redis-websocket
 CMD ["/spring-redis-websocket"]

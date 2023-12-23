@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+	initPlatform()
+
 	// define selectors to avoid duplication
 	let $alert = $('#websocket-disconnected');
 	let $userConnected = $("#connect-alert");
@@ -132,7 +134,7 @@ $(document).ready(function () {
 	});
 
 	$("#send-http-message").click(function () {
-		var chatMessage = $chatMessage.val();
+		const chatMessage = $chatMessage.val();
 		$.ajax({
 			url: "/message",
 			type: "POST",
@@ -150,7 +152,7 @@ $(document).ready(function () {
 	});
 
 	$('#chat-message').keypress(function (e) {
-		var key = e.which;
+		const key = e.which;
 		if (key === 13) {
 			sendMessage();
 		}
@@ -171,6 +173,22 @@ $(document).ready(function () {
 				$chatMessage.val("");
 			})
 		}
+	}
+
+	function initPlatform() {
+		$.ajax({
+			url: "/platform",
+			type: "GET",
+			dataType: "json",
+			contentType: "application/json",
+			success: function (response) {
+				console.log(response);
+				$("#platform").text(response.name);
+			},
+			error: function (err) {
+				console.log(err);
+			}
+		})
 	}
 
 });
