@@ -1,4 +1,4 @@
-name: DockerHub JVM Image - [AMD64 & ARM64]
+name: Docker JVM Image - [AMD64 & ARM64]
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build Multi Platform Docker Image for JVM
+    name: Build Multi Platform Docker JVM Image
     runs-on: ubuntu-latest
 
     steps:

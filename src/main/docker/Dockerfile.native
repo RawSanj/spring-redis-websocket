@@ -1,10 +1,8 @@
 FROM ghcr.io/graalvm/native-image-community:17 as build
-WORKDIR app
-COPY ../../.. .
+WORKDIR /app
+COPY ../../.. ./
 RUN ./mvnw -Pnative clean package -DskipNativeImage=false --file pom.xml
-RUN ls -la
-RUN ls -la target
 
-FROM ghcr.io/distroless/glibc-dynamic:latest
-COPY --from=build app/target/spring-redis-websocket spring-redis-websocket
+FROM ubuntu:jammy
+COPY --from=build /app/target/spring-redis-websocket spring-redis-websocket
 CMD ["/spring-redis-websocket"]

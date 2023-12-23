@@ -1,9 +1,10 @@
 # spring-redis-websocket
 
-[![Docker Multi-Platform Build](https://img.shields.io/github/actions/workflow/status/RawSanj/spring-redis-websocket/docker-image.yml?style=flat-square&logo=docker&label=multi-platform%20build)](https://github.com/RawSanj/spring-redis-websocket/actions/workflows/native-image.yml)
+[![Docker JVM Build](https://img.shields.io/github/actions/workflow/status/RawSanj/spring-redis-websocket/docker-jvm-image.yml?style=flat-square&logo=docker&label=jvm%20build)](https://github.com/RawSanj/spring-redis-websocket/actions/workflows/docker-jvm-image.yml)
+[![Docker GraalVM Native Build](https://img.shields.io/github/actions/workflow/status/RawSanj/spring-redis-websocket/docker-jvm-image.yml?style=flat-square&logo=docker&label=graalvm-native%20build)](https://github.com/RawSanj/spring-redis-websocket/actions/workflows/docker-jvm-image.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/rawsanj/spring-redis-websocket?style=flat-square&logo=docker&color=orange)](https://hub.docker.com/repository/docker/rawsanj/spring-redis-websocket/general)
 [![Spring Chat Website](https://img.shields.io/website?url=https%3A%2F%2Fchat.kasmx.dedyn.io%2Factuator%2Fhealth&up_message=online&up_color=green&down_message=offline&down_color=red&style=flat-square&logo=signal&logoColor=white&label=spring-chat&labelColor=purple)](https://chat.kasmx.dedyn.io)
-[![Discord Server](https://img.shields.io/discord/465093591002513418?style=flat-square&logo=discord&label=cloud-devs)](https://discord.gg/4ebNhud)
+[![Discord Server](https://img.shields.io/discord/465093591002513418?style=flat-square&logo=discord&label=discord-server)](https://discord.gg/4ebNhud)
 [![GitHub License](https://img.shields.io/github/license/rawsanj/spring-redis-websocket?style=flat-square&logo=apache&logoColor=red)](https://github.com/RawSanj/spring-redis-websocket?tab=Apache-2.0-1-ov-file)
 
 ## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
