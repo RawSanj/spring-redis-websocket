@@ -86,7 +86,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>${registry.image.name}:${project.version}-webflux</name>
+						<name>${registry.image.name}:${project.version}-jvm</name>
 					</image>
 				</configuration>
 				<executions>
