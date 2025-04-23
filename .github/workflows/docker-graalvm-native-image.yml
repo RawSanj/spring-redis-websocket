@@ -30,7 +30,7 @@ jobs:
       - name: Set Image Tag Version
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 21
           distribution: temurin
       - run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
@@ -39,6 +39,6 @@ jobs:
         with:
           context: .
           file: src/main/docker/Dockerfile.native
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: rawsanj/spring-redis-websocket:${{ env.TAG_VERSION }}-native

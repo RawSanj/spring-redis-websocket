@@ -16,7 +16,7 @@ spec:
         spec:
             containers:
                 -   name: spring-redis-websocket
-                    image: rawsanj/spring-redis-websocket:3.2.0-jvm
+                    image: rawsanj/spring-redis-websocket:3.4.4-jvm
                     resources:
                         limits:
                             memory: "512Mi"
@@ -48,7 +48,7 @@ spec:
         spec:
             containers:
                 -   name: spring-redis-websocket
-                    image: rawsanj/spring-redis-websocket:3.2.0-native
+                    image: rawsanj/spring-redis-websocket:3.4.4-native
                     resources:
                         limits:
                             memory: "512Mi"

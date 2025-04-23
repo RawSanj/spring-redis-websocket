@@ -8,5 +8,5 @@ spring:
 management:
     endpoint:
         health:
-            enabled: true
+            access: read_only
             show-details: always

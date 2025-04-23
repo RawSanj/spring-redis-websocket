@@ -9,7 +9,7 @@
 
 ## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
 
-Scalable Java 17 Spring Boot 3.x WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using
+Scalable Java 21 Spring Boot 3.x WebFlux Chat Application to demonstrate use of Reactive Redis [Pub/Sub] using
 Reactive [WebSocket Handler], without using any external Message Broker like RabbitMQ to sync messages between different
 instances.
 
@@ -25,6 +25,9 @@ Additionally, the Docker Image for JVM base is available for AMD64 and ARM64 arc
 > The older reactive spring-boot 2.x (java 11) based spring-redis-websocket application can be found in below:
 >1. [Spring-Boot 2.4.6: Java-11 Reactive JVM & GraalVM Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.4.6)
 >2. [Spring-Boot 2.5.2: Java-11 Reactive JVM & GraalVM Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-2.5.2)
+
+> The older reactive spring-boot 3.2.x (java 17) based spring-redis-websocket application can be found in below:
+>1. [Spring-Boot 3.2.0: Java-11 Reactive JVM & GraalVM Native version](https://github.com/RawSanj/spring-redis-websocket/tree/spring-boot-webflux-graal-native-3.2.0)
 
 ### Deploy to Play-with-Docker
 
@@ -50,8 +53,8 @@ Hence, this application is configured to use GraalVMVM native image tracing agen
 1. To run integration test which uses [Redis TestContainers](https://www.testcontainers.org/supported_docker_environment) so [Docker] should be configured properly to run [Testcontainers]
 2. You also need to install [GraalVMVM JDK](https://github.com/graalvm/graalvm-ce-builds/releases/tag/vm-22.3.0) and [native-image](https://www.graalvm.org/reference-manual/native-image) component:
    ```sh
-   $ sdk install java 22.3.r17-nik         # Using [SDKMAN](https://sdkman.io/jdks) install GraalVMVM distribution of JDK
-   $ sdk use java 22.3.r17-nik
+   $ sdk install java 21.0.2-graalce         # Using [SDKMAN](https://sdkman.io/jdks) install GraalVMVM distribution of JDK
+   $ sdk use java 21.0.2-graalce
    ```
 
 ##### Clone repo:
@@ -108,9 +111,9 @@ $ mvn -Pnative clean spring-boot:build-image
 Run docker image:
 
 ```sh
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-jvm # JVM based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.4.4-jvm # JVM based Docker Image
 
-$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.2.0-native  # GraalVM Native Image based Docker Image
+$ docker run -d -p 8080:8080 rawsanj/spring-redis-websocket:3.4.4-native  # GraalVM Native Image based Docker Image
 ```
 
 #### Run multiple instances using docker-compose locally
@@ -187,7 +190,7 @@ License
 
 Apache License 2.0
 
-Copyright (c) 2023 Sanjay Rawat
+Copyright (c) 2025 Sanjay Rawat
 
 [//]: #
 

@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash -i
+
+shopt -s expand_aliases
 
 # Runs Tests and Creates Docker Image based on Spring Graal Native Image
 echo '**************************************************************'

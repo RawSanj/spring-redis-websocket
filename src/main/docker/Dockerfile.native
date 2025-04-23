@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/native-image-community:17 as build
+FROM ghcr.io/graalvm/native-image-community:21 as build
 WORKDIR /app
 COPY ../../.. ./
 RUN ./mvnw -Pnative clean package -DskipNativeImage=false --file pom.xml
