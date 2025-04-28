@@ -20,6 +20,7 @@
 
 	<properties>
 		<java.version>21</java.version>
+		<git-commit-id-maven-plugin.version>7.0.0</git-commit-id-maven-plugin.version>
 		<registry.image.name>rawsanj/spring-redis-websocket</registry.image.name>
 		<skipNativeImage>true</skipNativeImage>
 	</properties>
@@ -103,6 +104,34 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>${git-commit-id-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnNoGitDirectory>true</failOnNoGitDirectory>
+					<failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.branch$</includeOnlyProperty>
+						<includeOnlyProperty>^git.build.version</includeOnlyProperty>
+						<includeOnlyProperty>^git.build.time</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.message.short</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.time</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.user.name</includeOnlyProperty>
+						<includeOnlyProperty>^git.total.commit.count</includeOnlyProperty>
+					</includeOnlyProperties>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

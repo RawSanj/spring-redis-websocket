@@ -177,13 +177,13 @@ $(document).ready(function () {
 
 	function initPlatform() {
 		$.ajax({
-			url: "/platform",
+			url: "/management/info",
 			type: "GET",
 			dataType: "json",
 			contentType: "application/json",
 			success: function (response) {
 				console.log(response);
-				$("#platform").text(response.name);
+				$("#platform").text(response.platform);
 			},
 			error: function (err) {
 				console.log(err);

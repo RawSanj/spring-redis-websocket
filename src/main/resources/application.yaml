@@ -5,8 +5,46 @@ spring:
         port: 6379
     application:
         name: spring-redis-reactive-websocket
+
 management:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+                include:
+                    - configprops
+                    - env
+                    - health
+                    - info
+                    - logfile
+                    - loggers
+                    - threaddump
     endpoint:
         health:
-            access: read_only
             show-details: always
+            group:
+                liveness:
+                    include: livenessState
+                readiness:
+                    include: readinessState
+    info:
+        git:
+            mode: full
+        env:
+            enabled: true
+    health:
+        redis:
+            enabled: true
+    metrics:
+        enable:
+            http: true
+            jvm: true
+            logback: true
+            process: true
+            system: true
+        distribution:
+            percentiles-histogram:
+                all: true
+            percentiles:
+                all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+
