@@ -22,11 +22,6 @@ management:
     endpoint:
         health:
             show-details: always
-            group:
-                liveness:
-                    include: livenessState
-                readiness:
-                    include: readinessState
     info:
         git:
             mode: full
