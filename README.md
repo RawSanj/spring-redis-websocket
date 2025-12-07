@@ -5,7 +5,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/rawsanj/spring-redis-websocket?style=flat-square&logo=docker&color=orange)](https://hub.docker.com/r/rawsanj/spring-redis-websocket)
 [![Discord Server](https://img.shields.io/discord/465093591002513418?style=flat-square&logo=discord&label=discord)](https://discord.gg/4ebNhud)
 [![GitHub License](https://img.shields.io/github/license/rawsanj/spring-redis-websocket?style=flat-square&logo=apache&logoColor=red)](https://github.com/RawSanj/spring-redis-websocket?tab=Apache-2.0-1-ov-file)
-[![Spring Chat Website](https://img.shields.io/website?url=https%3A%2F%2Fchat.apps.dedyn.io%2Factuator%2Fhealth&up_message=online&up_color=green&down_message=offline&down_color=red&style=flat-square&logo=signal&logoColor=white&label=DEMO%20Chat&labelColor=purple)](https://chat.apps.dedyn.io)
+[![Spring Chat Website](https://img.shields.io/website?url=https%3A%2F%2Fchat.apps.dedyn.io%2Fmanagement%2Fhealth&up_message=online&up_color=green&down_message=offline&down_color=red&style=flat-square&logo=signal&logoColor=white&label=DEMO%20Chat&labelColor=purple)](https://chat.apps.dedyn.io)
 
 ## Multi-instance Reactive Chat App using Spring Boot WebFlux and Redis Pub/Sub
 
@@ -223,3 +223,4 @@ Copyright (c) 2025 Sanjay Rawat
 [Play with Kubernetes]: <https://labs.play-with-k8s.com>
 
 [Play with Docker]: <https://labs.play-with-docker.com>
+
