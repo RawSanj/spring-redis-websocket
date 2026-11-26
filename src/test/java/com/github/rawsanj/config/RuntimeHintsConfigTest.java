@@ -14,7 +14,7 @@ class RuntimeHintsConfigTest {
 	void registerHintsTest() {
 		RuntimeHints hints = new RuntimeHints();
 		new RuntimeHintsConfig.SerdeRuntimeHints().registerHints(hints, getClass().getClassLoader());
-		assertThat(RuntimeHintsPredicates.serialization().onType(ChatMessage.class)).accepts(hints);
-		assertThat(RuntimeHintsPredicates.serialization().onType(Message.class)).accepts(hints);;
+		assertThat(RuntimeHintsPredicates.reflection().onType(ChatMessage.class)).accepts(hints);
+		assertThat(RuntimeHintsPredicates.reflection().onType(Message.class)).accepts(hints);
 	}
 }

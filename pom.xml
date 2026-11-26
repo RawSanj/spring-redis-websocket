@@ -5,22 +5,23 @@
 
 	<groupId>com.github.rawsanj</groupId>
 	<artifactId>spring-redis-websocket</artifactId>
-	<version>3.4.4</version>
+	<version>4.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>spring-redis-websocket</name>
-	<description>Spring Boot 3.x - Project for WebSocket Notification/Chat using Redis Pub/Sub - Java 21</description>
+	<description>Spring Boot 4.x - Project for WebSocket Notification/Chat using Redis Pub/Sub - Java 25</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
+		<version>4.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
-		<java.version>21</java.version>
-		<git-commit-id-maven-plugin.version>7.0.0</git-commit-id-maven-plugin.version>
+		<java.version>25</java.version>
+		<maven.compiler.proc>full</maven.compiler.proc>
+		<git-commit-id-maven-plugin.version>10.0.1</git-commit-id-maven-plugin.version>
 		<registry.image.name>rawsanj/spring-redis-websocket</registry.image.name>
 		<skipNativeImage>true</skipNativeImage>
 	</properties>
@@ -69,7 +70,7 @@
 		<dependency>
 			<groupId>io.projectreactor.tools</groupId>
 			<artifactId>blockhound</artifactId>
-			<version>1.0.11.RELEASE</version>
+			<version>1.0.19.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -80,7 +81,7 @@
 
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
+			<artifactId>testcontainers</artifactId>
 			<scope>test</scope>
 		</dependency>
 

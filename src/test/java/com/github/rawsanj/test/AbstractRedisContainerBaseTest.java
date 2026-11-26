@@ -2,6 +2,7 @@ package com.github.rawsanj.test;
 
 import com.github.rawsanj.SpringRedisWebSocketApplication;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
@@ -19,19 +20,19 @@ import org.testcontainers.containers.GenericContainer;
 )
 public class AbstractRedisContainerBaseTest {
 
-	private static final String REDIS_IMAGE = "bitnami/redis:6.0.9";
+	private static final String REDIS_IMAGE = "redis:7.4-alpine";
 	private static final String REDIS_PASSWORD = "SuperSecretRedisPassword";
 	private static final Integer REDIS_PORT = 6379;
 
 	private static final GenericContainer<?> redisContainer = new GenericContainer<>(REDIS_IMAGE)
 		.withExposedPorts(REDIS_PORT)
-		.withEnv("REDIS_PASSWORD", REDIS_PASSWORD)
+		.withCommand("redis-server", "--requirepass", REDIS_PASSWORD)
 		.withReuse(true);
 
 	public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 		@Override
-		public void initialize(ConfigurableApplicationContext context) {
+		public void initialize(@NonNull ConfigurableApplicationContext context) {
 			// Start container
 			redisContainer.start();
 
@@ -52,4 +53,3 @@ public class AbstractRedisContainerBaseTest {
 		}
 	}
 }
-

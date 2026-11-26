@@ -35,7 +35,7 @@ services:
       - 'redis_data:/bitnami/redis/data'
 
   spring-chat-jvm:
-    image: rawsanj/spring-redis-websocket:3.4.4-jvm
+    image: rawsanj/spring-redis-websocket:4.0.0-jvm
     restart: unless-stopped
     labels:
       - traefik.http.routers.chat.rule=PathPrefix(`/`) || Host(`chat.docker.localhost`) # PathPrefix(`/`) rule is helpful when running on play-with-docker.com to access chat app directly on port 80
@@ -52,7 +52,7 @@ services:
       replicas: 2
 
   spring-chat-native:
-    image: rawsanj/spring-redis-websocket:3.4.4-native
+    image: rawsanj/spring-redis-websocket:4.0.0-native
     restart: unless-stopped
     labels:
       - traefik.http.routers.chat.rule=PathPrefix(`/`) || Host(`chat.docker.localhost`) # PathPrefix(`/`) rule is helpful when running on play-with-docker.com to access chat app directly on port 80

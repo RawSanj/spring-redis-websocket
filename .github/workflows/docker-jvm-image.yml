@@ -30,7 +30,7 @@ jobs:
       - name: Set Image Tag Version
         uses: actions/setup-java@v4
         with:
-          java-version: 21
+          java-version: 25
           distribution: temurin
       - run: echo "TAG_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 

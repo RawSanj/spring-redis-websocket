@@ -1,7 +1,5 @@
 package com.github.rawsanj.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.rawsanj.model.ChatMessage;
 import com.github.rawsanj.model.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +14,7 @@ import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClien
 import org.springframework.web.reactive.socket.client.WebSocketClient;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.net.URI;
 import java.time.Duration;
@@ -33,7 +32,7 @@ class SpringRedisWebSocketApplicationIT extends AbstractRedisContainerBaseTest {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private ObjectMapper objectMapper;
+	private JsonMapper jsonMapper;
 	private WebTestClient testClient;
 
 	@LocalServerPort
@@ -58,14 +57,10 @@ class SpringRedisWebSocketApplicationIT extends AbstractRedisContainerBaseTest {
 		Mono<Void> executeWebSocketConnectMono = webSocketClient.execute(URI.create(webSocketConnectionUrl),
 			session -> session.receive()
 				.doOnNext(webSocketMessage -> {
-					try {
-						log.info("Message Received in Test Connection: {}", webSocketMessage.getPayloadAsText());
-						ChatMessage chatMessage = objectMapper.readValue(webSocketMessage.getPayloadAsText(), ChatMessage.class);
-						assertThat(chatMessage.getMessage()).isEqualTo(message);
-						assertThat(chatMessage.getId()).isEqualTo(messageCounter.incrementAndGet());
-					} catch (JsonProcessingException e) {
-						throw new RuntimeException(e);
-					}
+					log.info("Message Received in Test Connection: {}", webSocketMessage.getPayloadAsText());
+					ChatMessage chatMessage = jsonMapper.readValue(webSocketMessage.getPayloadAsText(), ChatMessage.class);
+					assertThat(chatMessage.getMessage()).isEqualTo(message);
+					assertThat(chatMessage.getId()).isEqualTo(messageCounter.incrementAndGet());
 				})
 				.then(session.close())
 		).timeout(Duration.ofSeconds(5)); // Assuming it takes 1 seconds to process one message to be on safer side.
