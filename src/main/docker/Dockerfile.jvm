@@ -1,7 +1,17 @@
+# Prebuild the React UI with an official Node image so the Maven stage never
+# has to download and run Node itself (its minimal images lack libatomic).
+FROM node:26-bookworm-slim AS frontend
+WORKDIR /app
+COPY react-ui/package.json react-ui/package-lock.json ./react-ui/
+RUN cd react-ui && npm ci
+COPY react-ui/ ./react-ui/
+RUN cd react-ui && npm run build
+
 FROM maven:3.9-eclipse-temurin-25 AS build
 WORKDIR /app
 COPY ../../.. ./
-RUN mvn clean package --file pom.xml
+COPY --from=frontend /app/src/main/resources/static/ ./src/main/resources/static/
+RUN mvn clean package --file pom.xml -Dskip.installnodenpm -Dskip.npm
 
 FROM eclipse-temurin:25-jre-alpine
 ENV RUNTIME_PLATFORM=JVM
