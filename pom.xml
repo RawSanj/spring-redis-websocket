@@ -107,6 +107,42 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.15.1</version>
+				<configuration>
+					<workingDirectory>react-ui</workingDirectory>
+					<installDirectory>target</installDirectory>
+					<nodeVersion>v26.13.1</nodeVersion>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-node-and-npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm-ci</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>ci</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build-react-ui</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>io.github.git-commit-id</groupId>
 				<artifactId>git-commit-id-maven-plugin</artifactId>
 				<version>${git-commit-id-maven-plugin.version}</version>
@@ -182,7 +218,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.22.2</version>
 						<configuration>
 							<argLine>-XX:+AllowRedefinitionToAddDeleteMethods</argLine>
 						</configuration>

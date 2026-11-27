@@ -68,3 +68,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# React UI (Vite): dependencies and Spring Boot build output
+react-ui/node_modules/
+src/main/resources/static/index.html
+src/main/resources/static/assets/

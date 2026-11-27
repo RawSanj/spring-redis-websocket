@@ -1,0 +1,25 @@
+{
+  "name": "react-ui",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Astryx-themed React group-chat UI for spring-redis-websocket. Built with Vite; served by Spring Boot from src/main/resources/static.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@astryxdesign/core": "^0.7.17",
+    "@astryxdesign/theme-butter": "^0.7.17",
+    "@heroicons/react": "^2.2.0",
+    "@stylexjs/stylex": "^0.19.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@astryxdesign/cli": "^0.7.17",
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^7.0.0"
+  }
+}
